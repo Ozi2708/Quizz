@@ -11,6 +11,8 @@
     "verifier": "tsx src/pipeline/cli.ts verifier",
     "rendu": "tsx src/pipeline/cli.ts rendu",
     "publier": "tsx src/pipeline/cli.ts publier",
+    "stats": "tsx src/pipeline/cli.ts stats",
+    "rapport": "tsx src/pipeline/cli.ts rapport",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"
   },

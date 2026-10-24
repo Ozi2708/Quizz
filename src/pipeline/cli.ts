@@ -16,6 +16,8 @@ import type { Categorie, Quiz } from "./types.ts";
 //   publier <fichier> --video <mp4> [--plateformes youtube,tiktok,instagram] [--prive]
 //           [--programme 2026-11-02T18:00] [--tentative 2] [--a-blanc]
 //                                         portes 1 et 2, puis publication via Upload-Post
+//   stats                                 relevé du jour (YouTube, TikTok saisi à la main) puis stats/RAPPORT.md
+//   rapport                               régénère stats/RAPPORT.md sans nouveau relevé
 
 const DOSSIER_QUIZ = "quizzes";
 
@@ -154,8 +156,20 @@ async function main(): Promise<number> {
       }
       return reussies === plateformes.length ? 0 : 1;
     }
+    case "stats":
+    case "rapport": {
+      const { collecter, ecrireRapport, FICHIER_RAPPORT } = await import("../analyse/collecter.ts");
+      const date = new Date().toISOString().slice(0, 10);
+      if (commande === "stats") {
+        const { releves, messages } = await collecter(date);
+        for (const m of messages) console.log(m);
+        ecrireRapport(date, releves);
+      } else ecrireRapport(date);
+      console.log(`Tableau de bord : ${FICHIER_RAPPORT}`);
+      return 0;
+    }
     default:
-      console.error("Commandes : valider, qa, generer, verifier, rendu, publier");
+      console.error("Commandes : valider, qa, generer, verifier, rendu, publier, stats, rapport");
       return 1;
   }
 }
