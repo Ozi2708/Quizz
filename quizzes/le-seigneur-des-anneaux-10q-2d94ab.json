@@ -1,0 +1,552 @@
+{
+  "id": "le-seigneur-des-anneaux-10q-2d94ab",
+  "version_schema": "1.0",
+  "langue": "fr",
+  "theme": {
+    "categorie": "film",
+    "sujet": "Le Seigneur des anneaux",
+    "sous_sujet": "La trilogie de Peter Jackson (2001-2003)",
+    "tags": [
+      "Le Seigneur des anneaux",
+      "Peter Jackson",
+      "Tolkien",
+      "fantasy",
+      "cinéma",
+      "Terre du Milieu"
+    ]
+  },
+  "titre": "Le Seigneur des anneaux : le quiz des films",
+  "format_cible": [
+    "court-9x16",
+    "long-16x9"
+  ],
+  "statut": "fact-check-ok",
+  "parametres_video": {
+    "duree_timer_s": 8,
+    "duree_reponse_s": 4,
+    "ordre_reponses": "aleatoire-fixe",
+    "habillage": "defaut",
+    "voix_off": false
+  },
+  "questions": [
+    {
+      "numero": 1,
+      "difficulte": 1,
+      "libelle_difficulte": "Facile",
+      "type": "vrai-faux",
+      "enonce": "Vrai ou faux : la trilogie de Peter Jackson a été tournée en Nouvelle-Zélande.",
+      "bonne_reponse": "Vrai",
+      "distracteurs": [
+        "Faux"
+      ],
+      "anecdote": "Le décor de Hobbitebourg a été bâti dans une ferme près de Matamata, et il se visite encore aujourd'hui.",
+      "media": {
+        "visuel_prompt": "Vastes collines verdoyantes sous un ciel nuageux, lumière dorée de fin de journée, paysage néo-zélandais sauvage",
+        "doodle": "epingle"
+      },
+      "sources": [
+        {
+          "reference": "Wikipédia, The Lord of the Rings (film series)",
+          "url": "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings_(film_series)"
+        },
+        {
+          "reference": "Tolkien Gateway – The Lord of the Rings (film series)",
+          "url": "https://tolkiengateway.net/wiki/The_Lord_of_the_Rings_(film_series)"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 2,
+        "note": "remarque : Tournage principal sur plus de 150 lieux, dans les îles du Nord et du Sud."
+      },
+      "part_estimee": 98
+    },
+    {
+      "numero": 2,
+      "difficulte": 1,
+      "libelle_difficulte": "Facile",
+      "type": "qcm-4",
+      "enonce": "Dans quelle montagne Frodon doit-il détruire l'Anneau unique ?",
+      "bonne_reponse": "La Montagne du Destin",
+      "distracteurs": [
+        "Le Caradhras",
+        "L'Erebor",
+        "Le Mont Gundabad"
+      ],
+      "anecdote": "Pour la Montagne du Destin, l'équipe a tourné sur les pentes du Ruapehu, un volcan actif de Nouvelle-Zélande.",
+      "media": {
+        "visuel_prompt": "Plaine de roche noire et de cendres sous un ciel rougeoyant, fumée lointaine, atmosphère oppressante",
+        "doodle": {
+          "traits": [
+            [
+              "M100 40 A55 55 0 1 1 99.9 40 Z",
+              "acc"
+            ],
+            [
+              "M100 62 A33 33 0 1 1 99.9 62 Z",
+              "paper"
+            ],
+            [
+              "M40 30 L50 40 M160 30 L150 40 M30 95 L42 95 M170 95 L158 95"
+            ],
+            [
+              "M65 175 L135 175"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Film Le Seigneur des anneaux : La Communauté de l'anneau (2001), conseil d'Elrond"
+        },
+        {
+          "reference": "Wikipédia – Anneau unique",
+          "url": "https://fr.wikipedia.org/wiki/Anneau_unique"
+        },
+        {
+          "reference": "Tom's Guide",
+          "url": "https://www.tomsguide.fr/le-seigneur-des-anneaux-pourquoi-sauron-na-pas-protege-la-montagne-du-destin/"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : Aussi appelée Orodruin."
+      },
+      "part_estimee": 95
+    },
+    {
+      "numero": 3,
+      "difficulte": 2,
+      "libelle_difficulte": "Moyen",
+      "type": "qcm-4",
+      "enonce": "Comment s'appelle l'épée de Frodon dans la VF des films ?",
+      "bonne_reponse": "Dard",
+      "distracteurs": [
+        "Glamdring",
+        "Andúril",
+        "Orcrist"
+      ],
+      "anecdote": "En VO, l'épée s'appelle Sting : Bilbon l'a baptisée ainsi après avoir combattu des araignées géantes.",
+      "media": {
+        "visuel_prompt": "Lame elfique posée sur un tissu ancien, reflets bleutés dans la pénombre, ambiance de Fondcombe",
+        "doodle": {
+          "traits": [
+            [
+              "M100 15 L108 30 L108 130 L92 130 L92 30 Z",
+              "paper"
+            ],
+            [
+              "M65 130 L135 130 L135 142 L65 142 Z",
+              "ink"
+            ],
+            [
+              "M94 142 L106 142 L106 172 L94 172 Z",
+              "acc"
+            ],
+            [
+              "M100 172 A8 8 0 1 1 99.9 172 Z",
+              "ink"
+            ],
+            [
+              "M100 40 L100 120"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Film Le Seigneur des anneaux : La Communauté de l'anneau (2001), VF, scène de Fondcombe"
+        },
+        {
+          "reference": "Battlemerchant – Épées du Seigneur des Anneaux",
+          "url": "https://www.battlemerchant.com/fr/blog/les-lames-legendaires-de-la-terre-du-milieu-de-tolkien"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 2,
+        "note": "remarque : Sting en VO ; c'était d'abord l'épée de Bilbon."
+      },
+      "part_estimee": 85
+    },
+    {
+      "numero": 4,
+      "difficulte": 2,
+      "libelle_difficulte": "Moyen",
+      "type": "qcm-4",
+      "enonce": "Quel acteur incarne Gandalf dans la trilogie de Peter Jackson ?",
+      "bonne_reponse": "Ian McKellen",
+      "distracteurs": [
+        "Christopher Lee",
+        "Ian Holm",
+        "Hugo Weaving"
+      ],
+      "anecdote": "Christopher Lee, fan absolu de Tolkien, rêvait de jouer Gandalf mais a finalement incarné Saroumane.",
+      "media": {
+        "visuel_prompt": "Sentier de campagne bordé de haies au crépuscule, fumée de pipe flottant dans l'air, lumière chaude",
+        "doodle": {
+          "traits": [
+            [
+              "M100 20 L140 150 L60 150 Z",
+              "paper"
+            ],
+            [
+              "M66 132 L134 132 L139 148 L61 148 Z",
+              "acc"
+            ],
+            [
+              "M30 150 Q100 178 170 150 Q100 140 30 150 Z",
+              "ink"
+            ],
+            [
+              "M100 20 Q112 30 118 45"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Wikipédia, The Lord of the Rings (film series), distribution",
+          "url": "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings_(film_series)"
+        },
+        {
+          "reference": "Wikipédia – Le Seigneur des anneaux (série de films)",
+          "url": "https://fr.wikipedia.org/wiki/Le_Seigneur_des_anneaux_(s%C3%A9rie_de_films)"
+        },
+        {
+          "reference": "AlloCiné",
+          "url": "https://www.allocine.fr/article/fichearticle_gen_carticle=18709658.html"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3
+      },
+      "part_estimee": 88
+    },
+    {
+      "numero": 5,
+      "difficulte": 3,
+      "libelle_difficulte": "Difficile",
+      "type": "qcm-4",
+      "enonce": "Combien d'Oscars Le Retour du roi a-t-il remportés en 2004 ?",
+      "bonne_reponse": "11 Oscars",
+      "distracteurs": [
+        "9 Oscars",
+        "13 Oscars",
+        "7 Oscars"
+      ],
+      "anecdote": "Le Retour du roi a gagné dans les 11 catégories où il était nommé : un sans-faute record.",
+      "media": {
+        "visuel_prompt": "Grande salle de cérémonie aux rideaux rouges, projecteurs dorés et scène vide, ambiance de gala",
+        "doodle": "couronne"
+      },
+      "sources": [
+        {
+          "reference": "Wikipédia, 76th Academy Awards",
+          "url": "https://en.wikipedia.org/wiki/76th_Academy_Awards"
+        },
+        {
+          "reference": "NZHistory",
+          "url": "https://nzhistory.govt.nz/page/lord-rings-wins-11-oscars"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 2,
+        "note": "remarque : Record partagé avec Ben-Hur et Titanic."
+      },
+      "part_estimee": 55
+    },
+    {
+      "numero": 6,
+      "difficulte": 3,
+      "libelle_difficulte": "Difficile",
+      "type": "qcm-4",
+      "enonce": "Comment s'appelle le cheval de Gandalf dans la VF des films ?",
+      "bonne_reponse": "Gripoil",
+      "distracteurs": [
+        "Brego",
+        "Asfaloth",
+        "Hasufel"
+      ],
+      "anecdote": "En VO, Gripoil s'appelle Shadowfax, littéralement « crinière d'ombre ».",
+      "media": {
+        "visuel_prompt": "Plaine herbeuse balayée par le vent sous un ciel d'aube, poussière soulevée au loin",
+        "doodle": {
+          "traits": [
+            [
+              "M60 40 L60 110 A40 40 0 0 0 140 110 L140 40 L120 40 L120 110 A20 20 0 0 1 80 110 L80 40 Z",
+              "acc"
+            ],
+            [
+              "M70 55 L70 62 M70 80 L70 87 M130 55 L130 62 M130 80 L130 87"
+            ],
+            [
+              "M50 175 L150 175"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Film Le Seigneur des anneaux : La Communauté de l'anneau (2001), VF"
+        },
+        {
+          "reference": "J.R.R. Tolkien, Le Seigneur des anneaux, trad. Francis Ledoux"
+        },
+        {
+          "reference": "CNews – Gripoil, le cheval de Gandalf est mort",
+          "url": "https://www.cnews.fr/culture/2014-04-14/video-gripoil-le-cheval-de-gandalf-est-mort-673556"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 2,
+        "note": "remarque : Shadowfax en VO ; le cheval qui l'a joué s'appelait Blanco."
+      },
+      "part_estimee": 45
+    },
+    {
+      "numero": 7,
+      "difficulte": 4,
+      "libelle_difficulte": "Expert",
+      "type": "qcm-4",
+      "enonce": "Quel acteur a d'abord été choisi pour jouer Aragorn, avant Viggo Mortensen ?",
+      "bonne_reponse": "Stuart Townsend",
+      "distracteurs": [
+        "Russell Crowe",
+        "Daniel Day-Lewis",
+        "Jason Patric"
+      ],
+      "anecdote": "Stuart Townsend a été remplacé juste après le début du tournage : Peter Jackson le trouvait trop jeune pour le rôle.",
+      "media": {
+        "visuel_prompt": "Plateau de cinéma vide dans une forêt brumeuse, projecteurs éteints et chaises de réalisateur",
+        "doodle": {
+          "traits": [
+            [
+              "M40 80 L160 80 L160 170 L40 170 Z",
+              "paper"
+            ],
+            [
+              "M40 58 L158 40 L162 62 L44 80 Z",
+              "ink"
+            ],
+            [
+              "M70 54 L80 74 M105 49 L115 69 M135 45 L145 65",
+              "accline"
+            ],
+            [
+              "M55 110 L145 110 M55 140 L120 140"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Wikipédia, Stuart Townsend",
+          "url": "https://en.wikipedia.org/wiki/Stuart_Townsend"
+        },
+        {
+          "reference": "Tolkien Gateway – Stuart Townsend",
+          "url": "https://tolkiengateway.net/wiki/Stuart_Townsend"
+        },
+        {
+          "reference": "IMDb – Stuart Townsend",
+          "url": "https://www.imdb.com/name/nm0870204/"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : Daniel Day-Lewis et Russell Crowe ont été approchés, mais seul Townsend avait été engagé."
+      },
+      "part_estimee": 20
+    },
+    {
+      "numero": 8,
+      "difficulte": 4,
+      "libelle_difficulte": "Expert",
+      "type": "qcm-4",
+      "enonce": "Combien d'Oscars la trilogie a-t-elle remportés au total ?",
+      "bonne_reponse": "17 Oscars",
+      "distracteurs": [
+        "14 Oscars",
+        "15 Oscars",
+        "19 Oscars"
+      ],
+      "anecdote": "La Communauté de l'anneau a gagné 4 Oscars, Les Deux Tours 2, et Le Retour du roi 11.",
+      "media": {
+        "visuel_prompt": "Tapis rouge désert sous des projecteurs, confettis dorés suspendus dans l'air, fond sombre",
+        "doodle": {
+          "traits": [
+            [
+              "M60 30 L140 30 Q140 100 100 110 Q60 100 60 30 Z",
+              "acc"
+            ],
+            [
+              "M60 45 C35 45 35 80 65 85 M140 45 C165 45 165 80 135 85"
+            ],
+            [
+              "M93 110 L107 110 L107 145 L93 145 Z",
+              "paper"
+            ],
+            [
+              "M65 145 L135 145 L140 165 L60 165 Z",
+              "ink"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Wikipédia, The Lord of the Rings (film series), récompenses",
+          "url": "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings_(film_series)"
+        },
+        {
+          "reference": "Britannica – Which trilogy has 17 Oscars?",
+          "url": "https://www.britannica.com/question/Which-trilogy-has-17-Oscars"
+        },
+        {
+          "reference": "Wikipedia – List of accolades received by The Lord of the Rings film series",
+          "url": "https://en.wikipedia.org/wiki/List_of_accolades_received_by_The_Lord_of_the_Rings_film_series"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : 4 + 2 + 11, sur 30 nominations."
+      },
+      "part_estimee": 22
+    },
+    {
+      "numero": 9,
+      "difficulte": 5,
+      "libelle_difficulte": "Impossible",
+      "type": "qcm-4",
+      "enonce": "Quel acteur joue Déagol, qui trouve l'Anneau au début du Retour du roi ?",
+      "bonne_reponse": "Thomas Robins",
+      "distracteurs": [
+        "Craig Parker",
+        "Bruce Hopkins",
+        "Ian Hughes"
+      ],
+      "anecdote": "Dans ce flash-back, Andy Serkis apparaît à visage découvert, en Sméagol encore hobbit, avant de devenir Gollum.",
+      "media": {
+        "visuel_prompt": "Rivière paisible bordée de roseaux sous un soleil d'été, petite barque en bois amarrée",
+        "doodle": {
+          "traits": [
+            [
+              "M40 100 Q90 55 140 100 Q90 145 40 100 Z",
+              "paper"
+            ],
+            [
+              "M140 100 L170 75 L170 125 Z",
+              "acc"
+            ],
+            [
+              "M65 95 A4 4 0 1 1 64.9 95 Z",
+              "ink"
+            ],
+            [
+              "M30 165 Q50 155 70 165 Q90 175 110 165 Q130 155 150 165"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Film Le Seigneur des anneaux : Le Retour du roi (2003), prologue"
+        },
+        {
+          "reference": "Wikipédia, The Lord of the Rings: The Return of the King",
+          "url": "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings:_The_Return_of_the_King"
+        },
+        {
+          "reference": "Tolkien Gateway – Déagol",
+          "url": "https://tolkiengateway.net/wiki/D%C3%A9agol"
+        },
+        {
+          "reference": "Tolkien Gateway – Thomas Robins",
+          "url": "https://tolkiengateway.net/wiki/Thomas_Robins"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : Il joue aussi le jeune Thráin dans Le Hobbit."
+      },
+      "part_estimee": 3
+    },
+    {
+      "numero": 10,
+      "difficulte": 5,
+      "libelle_difficulte": "Impossible",
+      "type": "qcm-4",
+      "enonce": "Combien de jours a duré le tournage principal de la trilogie ?",
+      "bonne_reponse": "274 jours",
+      "distracteurs": [
+        "198 jours",
+        "365 jours",
+        "412 jours"
+      ],
+      "anecdote": "Les trois films ont été tournés d'un seul bloc, d'octobre 1999 à décembre 2000, avant des prises additionnelles.",
+      "media": {
+        "visuel_prompt": "Vallée montagneuse enneigée au lever du soleil, camp de tentes de tournage minuscule au loin",
+        "doodle": {
+          "traits": [
+            [
+              "M40 50 L160 50 L160 170 L40 170 Z",
+              "paper"
+            ],
+            [
+              "M40 50 L160 50 L160 80 L40 80 Z",
+              "acc"
+            ],
+            [
+              "M70 35 L70 60 M130 35 L130 60"
+            ],
+            [
+              "M40 110 L160 110 M40 140 L160 140 M80 80 L80 170 M120 80 L120 170"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Wikipédia, The Lord of the Rings (film series), tournage",
+          "url": "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings_(film_series)"
+        },
+        {
+          "reference": "AlloCiné – Secrets de tournage, La Communauté de l'anneau",
+          "url": "https://www.allocine.fr/film/fichefilm-27070/secrets-tournage/"
+        },
+        {
+          "reference": "Tolkien Gateway – The Lord of the Rings (film series)",
+          "url": "https://tolkiengateway.net/wiki/The_Lord_of_the_Rings_(film_series)"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : Ce sont des jours de tournage effectifs (267 prévus au départ), et non la durée en jours de calendrier."
+      },
+      "part_estimee": 3
+    }
+  ],
+  "metadonnees_publication": {
+    "titre_youtube": "Quiz Le Seigneur des anneaux : seul un vrai fan aura 10/10 !",
+    "titre_court": "Quiz Seigneur des anneaux",
+    "description": "Testes-tu ta connaissance de la trilogie Le Seigneur des anneaux de Peter Jackson ? 10 questions, du niveau facile à impossible, entre Terre du Milieu, Oscars et coulisses du tournage. Quiz non officiel, réalisé par des fans pour des fans.",
+    "hashtags": [
+      "#SeigneurDesAnneaux",
+      "#Quiz",
+      "#Tolkien",
+      "#PeterJackson",
+      "#Cinema"
+    ],
+    "texte_miniature": "Vrai fan de la Terre ?",
+    "question_commentaire": "Combien de bonnes réponses as-tu eues sur 10 ? Dis-le en commentaire !"
+  }
+}
