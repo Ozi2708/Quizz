@@ -1,0 +1,545 @@
+{
+  "id": "le-seigneur-des-anneaux-10q-f7e37f",
+  "version_schema": "1.0",
+  "langue": "fr",
+  "theme": {
+    "categorie": "film",
+    "sujet": "Le Seigneur des anneaux",
+    "sous_sujet": "Les films, de la Comté aux coulisses du tournage",
+    "tags": [
+      "Le Seigneur des anneaux",
+      "Peter Jackson",
+      "Tolkien",
+      "fantasy",
+      "cinéma",
+      "Terre du Milieu"
+    ]
+  },
+  "titre": "Le Seigneur des anneaux : la trilogie de Peter Jackson",
+  "format_cible": [
+    "court-9x16",
+    "long-16x9"
+  ],
+  "statut": "fact-check-ok",
+  "parametres_video": {
+    "duree_timer_s": 8,
+    "duree_reponse_s": 4,
+    "ordre_reponses": "aleatoire-fixe",
+    "habillage": "defaut",
+    "voix_off": false
+  },
+  "questions": [
+    {
+      "numero": 1,
+      "difficulte": 1,
+      "libelle_difficulte": "Facile",
+      "type": "qcm-4",
+      "enonce": "Dans quelle région de la Terre du Milieu vivent Frodon et les Hobbits ?",
+      "bonne_reponse": "La Comté",
+      "distracteurs": [
+        "Le Rohan",
+        "Le Gondor",
+        "La Moria"
+      ],
+      "anecdote": "Le décor de Hobbitebourg, tourné à Matamata en Nouvelle-Zélande, est devenu un site touristique qui se visite encore aujourd'hui.",
+      "media": {
+        "visuel_prompt": "Collines verdoyantes et arrondies sous un ciel d'été, petits jardins fleuris et chemin de terre, lumière douce de fin d'après-midi",
+        "doodle": {
+          "traits": [
+            [
+              "M120 80 L160 80 L155 130 C150 145 125 145 122 130 Z",
+              "paper"
+            ],
+            [
+              "M122 115 L40 130 L40 140 L125 128 Z",
+              "paper"
+            ],
+            [
+              "M140 70 C130 55 150 45 140 30 M155 65 C148 50 165 40 158 25",
+              "accline"
+            ],
+            [
+              "M30 170 L170 170"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Le Seigneur des anneaux : La Communauté de l'anneau (Peter Jackson, 2001), scènes d'ouverture"
+        },
+        {
+          "reference": "Wikipédia – Comté (Terre du Milieu)",
+          "url": "https://fr.wikipedia.org/wiki/Comt%C3%A9_(Terre_du_Milieu)"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 2,
+        "note": "remarque : La traduction de Daniel Lauzon dit « le Comté », celle de Francis Ledoux et les films en VF disent « la Comté »."
+      }
+    },
+    {
+      "numero": 2,
+      "difficulte": 1,
+      "libelle_difficulte": "Facile",
+      "type": "qcm-4",
+      "enonce": "Où Frodon doit-il détruire l'Anneau unique ?",
+      "bonne_reponse": "La Montagne du Destin",
+      "distracteurs": [
+        "Le Gouffre de Helm",
+        "La tour d'Orthanc",
+        "Les Monts Brumeux"
+      ],
+      "anecdote": "Le mont Ngauruhoe, un volcan actif de Nouvelle-Zélande, a servi de modèle et de décor à la Montagne du Destin.",
+      "media": {
+        "visuel_prompt": "Plaine volcanique sombre, ciel rougeoyant chargé de cendres, lueur orangée à l'horizon",
+        "doodle": {
+          "traits": [
+            [
+              "M50 100 A50 50 0 1 1 150 100 A50 50 0 1 1 50 100 Z",
+              "acc"
+            ],
+            [
+              "M68 100 A32 32 0 1 1 132 100 A32 32 0 1 1 68 100 Z",
+              "paper"
+            ],
+            [
+              "M62 78 C68 66 80 58 92 56"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Le Seigneur des anneaux : La Communauté de l'anneau (2001), conseil d'Elrond à Fondcombe"
+        },
+        {
+          "reference": "Vikidia – Montagne du Destin",
+          "url": "https://fr.vikidia.org/wiki/Montagne_du_Destin"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 2
+      }
+    },
+    {
+      "numero": 3,
+      "difficulte": 2,
+      "libelle_difficulte": "Moyen",
+      "type": "qcm-4",
+      "enonce": "Quel acteur incarne Gandalf dans la trilogie de Peter Jackson ?",
+      "bonne_reponse": "Ian McKellen",
+      "distracteurs": [
+        "Ian Holm",
+        "Christopher Lee",
+        "Bernard Hill"
+      ],
+      "anecdote": "Ian McKellen a été nommé à l'Oscar du meilleur second rôle pour La Communauté de l'anneau.",
+      "media": {
+        "visuel_prompt": "Sentier de montagne brumeux au crépuscule, bâton de bois appuyé contre un rocher, lumière bleutée",
+        "doodle": {
+          "traits": [
+            [
+              "M100 20 L140 140 L60 140 Z",
+              "paper"
+            ],
+            [
+              "M30 140 C60 160 140 160 170 140 C140 130 60 130 30 140 Z",
+              "paper"
+            ],
+            [
+              "M68 118 L132 118 L136 130 L64 130 Z",
+              "acc"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Fiche du film The Lord of the Rings: The Fellowship of the Ring, distribution",
+          "url": "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring"
+        },
+        {
+          "reference": "Tolkien Gateway – Ian McKellen",
+          "url": "https://tolkiengateway.net/wiki/Ian_McKellen"
+        },
+        {
+          "reference": "LOTR Wiki – Ian McKellen",
+          "url": "https://lotr.fandom.com/wiki/Ian_McKellen"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3
+      }
+    },
+    {
+      "numero": 4,
+      "difficulte": 2,
+      "libelle_difficulte": "Moyen",
+      "type": "qcm-4",
+      "enonce": "Quel était le nom de Gollum avant qu'il ne possède l'Anneau ?",
+      "bonne_reponse": "Sméagol",
+      "distracteurs": [
+        "Déagol",
+        "Gorbag",
+        "Grishnákh"
+      ],
+      "anecdote": "Andy Serkis prêtait sa voix et ses mouvements à Gollum, enregistrés en capture de mouvement puis animés par Weta Digital.",
+      "media": {
+        "visuel_prompt": "Rivière sombre au fond d'une grotte humide, reflets pâles sur l'eau, rochers luisants",
+        "doodle": {
+          "traits": [
+            [
+              "M40 100 C70 60 130 60 150 100 C130 140 70 140 40 100 Z",
+              "paper"
+            ],
+            [
+              "M150 100 L180 75 L180 125 Z",
+              "paper"
+            ],
+            [
+              "M65 95 A5 5 0 1 1 75 95 A5 5 0 1 1 65 95 Z",
+              "ink"
+            ],
+            [
+              "M95 70 C100 55 115 55 120 72",
+              "accline"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Le Seigneur des anneaux : Le Retour du roi (2003), prologue avec Sméagol et Déagol"
+        },
+        {
+          "reference": "Wikipedia – Gollum",
+          "url": "https://en.wikipedia.org/wiki/Gollum"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 2,
+        "note": "remarque : Déagol est le cousin qu'il a assassiné pour prendre l'Anneau."
+      }
+    },
+    {
+      "numero": 5,
+      "difficulte": 3,
+      "libelle_difficulte": "Difficile",
+      "type": "qcm-4",
+      "enonce": "Comment s'appelle l'épée reforgée qu'Elrond remet à Aragorn ?",
+      "bonne_reponse": "Andúril",
+      "distracteurs": [
+        "Glamdring",
+        "Orcrist",
+        "Dard"
+      ],
+      "anecdote": "Dans le livre, l'épée est reforgée avant le départ de la Communauté, et non dans le dernier volet comme au cinéma.",
+      "media": {
+        "visuel_prompt": "Forge elfique éclairée par des braises, étincelles flottant dans la pénombre, colonnes sculptées",
+        "doodle": {
+          "traits": [
+            [
+              "M30 90 L170 90 L170 105 L130 115 L120 140 L80 140 L70 115 L40 105 Z",
+              "paper"
+            ],
+            [
+              "M60 140 L140 140 L150 165 L50 165 Z",
+              "paper"
+            ],
+            [
+              "M110 40 L150 40 L150 60 L110 60 Z",
+              "ink"
+            ],
+            [
+              "M128 60 L118 85"
+            ],
+            [
+              "M90 80 L80 65 M100 78 L100 60 M110 82 L95 70",
+              "accline"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Le Seigneur des anneaux : Le Retour du roi (2003), scène d'Elrond à Dunharrow"
+        },
+        {
+          "reference": "Wikipédia – Andúril",
+          "url": "https://fr.wikipedia.org/wiki/And%C3%BAril"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 2,
+        "note": "remarque : La remise par Elrond à Dunharrow se passe dans le film. Dans le livre, l'épée est reforgée à Fondcombe avant le départ de la Communauté."
+      }
+    },
+    {
+      "numero": 6,
+      "difficulte": 3,
+      "libelle_difficulte": "Difficile",
+      "type": "qcm-4",
+      "enonce": "Combien d'Oscars a remporté Le Retour du roi ?",
+      "bonne_reponse": "11",
+      "distracteurs": [
+        "8",
+        "9",
+        "13"
+      ],
+      "anecdote": "Le Retour du roi a remporté les 11 Oscars pour lesquels il était nommé, dont celui du meilleur film.",
+      "media": {
+        "visuel_prompt": "Scène de gala vide aux rideaux rouges, projecteurs dorés et confettis scintillants",
+        "doodle": {
+          "traits": [
+            [
+              "M60 40 L140 40 C140 100 120 120 100 120 C80 120 60 100 60 40 Z",
+              "acc"
+            ],
+            [
+              "M60 55 C35 55 35 90 65 90 M140 55 C165 55 165 90 135 90"
+            ],
+            [
+              "M92 120 L108 120 L108 145 L92 145 Z",
+              "paper"
+            ],
+            [
+              "M65 145 L135 145 L140 165 L60 165 Z",
+              "paper"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "76e cérémonie des Oscars (2004)",
+          "url": "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings:_The_Return_of_the_King"
+        },
+        {
+          "reference": "Wikipédia – Le Seigneur des anneaux : Le Retour du roi",
+          "url": "https://fr.wikipedia.org/wiki/Le_Seigneur_des_anneaux_:_Le_Retour_du_roi"
+        },
+        {
+          "reference": "Wikipédia – 76e cérémonie des Oscars",
+          "url": "https://fr.wikipedia.org/wiki/76e_c%C3%A9r%C3%A9monie_des_Oscars"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : 11 Oscars sur 11 nominations, record partagé avec Ben-Hur et Titanic."
+      }
+    },
+    {
+      "numero": 7,
+      "difficulte": 4,
+      "libelle_difficulte": "Expert",
+      "type": "qcm-4",
+      "enonce": "En VF, comment s'appelle le cheval blanc de Gandalf ?",
+      "bonne_reponse": "Gripoil",
+      "distracteurs": [
+        "Brego",
+        "Hasufel",
+        "Arod"
+      ],
+      "anecdote": "Gripoil, Shadowfax en VO, appartient aux Mearas, la lignée de chevaux la plus noble du Rohan.",
+      "media": {
+        "visuel_prompt": "Grande plaine herbeuse balayée par le vent au lever du soleil, montagnes enneigées au loin",
+        "doodle": {
+          "traits": [
+            [
+              "M60 40 L80 40 L80 110 C80 140 120 140 120 110 L120 40 L140 40 L140 110 C140 170 60 170 60 110 Z",
+              "paper"
+            ],
+            [
+              "M68 60 L72 60 L72 66 L68 66 Z M128 60 L132 60 L132 66 L128 66 Z M68 90 L72 90 L72 96 L68 96 Z M128 90 L132 90 L132 96 L128 96 Z",
+              "ink"
+            ],
+            [
+              "M30 150 L48 140 M152 140 L170 150 M40 170 L55 160",
+              "accline"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Le Seigneur des anneaux : Les Deux Tours (2002), version française, arrivée de Gandalf au Rohan"
+        },
+        {
+          "reference": "CNews – Gripoil, le cheval de Gandalf est mort",
+          "url": "https://www.cnews.fr/culture/2014-04-14/video-gripoil-le-cheval-de-gandalf-est-mort-673556"
+        },
+        {
+          "reference": "Vikidia – Gripoil",
+          "url": "https://fr.vikidia.org/wiki/Gripoil"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : « Gripoil » dans les films en VF et la traduction de Ledoux, « Scadufax » dans celle de Lauzon (Shadowfax en VO). Arod, Hasufel et Brego sont d'autres chevaux."
+      }
+    },
+    {
+      "numero": 8,
+      "difficulte": 4,
+      "libelle_difficulte": "Expert",
+      "type": "qcm-4",
+      "enonce": "Dans Les Deux Tours, Viggo Mortensen s'est cassé des orteils en frappant…",
+      "bonne_reponse": "Un casque d'orque",
+      "distracteurs": [
+        "Un bouclier du Rohan",
+        "Une selle de cheval",
+        "Une porte en bois"
+      ],
+      "anecdote": "Le cri de douleur de Viggo Mortensen, pris pour du jeu d'acteur, a été conservé dans le montage final du film.",
+      "media": {
+        "visuel_prompt": "Lisière de forêt brumeuse au petit matin, restes d'un feu de camp fumant dans l'herbe",
+        "doodle": {
+          "traits": [
+            [
+              "M70 30 L110 30 L110 130 L160 140 C175 145 175 170 160 170 L60 170 L70 30 Z",
+              "paper"
+            ],
+            [
+              "M60 170 L165 170"
+            ],
+            [
+              "M70 60 L110 60"
+            ],
+            [
+              "M178 120 L192 105 M182 140 L198 137 M178 160 L192 170",
+              "accline"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Viggo Mortensen, anecdotes de tournage des Deux Tours",
+          "url": "https://en.wikipedia.org/wiki/Viggo_Mortensen"
+        },
+        {
+          "reference": "AlloCiné – 6 acteurs qui se sont blessés sur le tournage",
+          "url": "https://www.allocine.fr/article/fichearticle_gen_carticle=18693633.html"
+        },
+        {
+          "reference": "No Film School – Viggo Mortensen's broken toes",
+          "url": "https://nofilmschool.com/viggo-mortensen-broken-toes-two-towers-scream"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : Plus précisément un casque d'Uruk-hai. Il s'est cassé deux orteils."
+      }
+    },
+    {
+      "numero": 9,
+      "difficulte": 5,
+      "libelle_difficulte": "Impossible",
+      "type": "qcm-4",
+      "enonce": "Quel acteur devait jouer Aragorn avant d'être remplacé par Viggo Mortensen ?",
+      "bonne_reponse": "Stuart Townsend",
+      "distracteurs": [
+        "Jude Law",
+        "Ewan McGregor",
+        "Jonathan Rhys Meyers"
+      ],
+      "anecdote": "Viggo Mortensen a accepté le rôle en partie grâce à son fils, grand lecteur de Tolkien.",
+      "media": {
+        "visuel_prompt": "Salle du trône vide aux colonnes de pierre blanche, lumière tombant d'une haute fenêtre",
+        "doodle": "couronne"
+      },
+      "sources": [
+        {
+          "reference": "Stuart Townsend, casting du Seigneur des anneaux",
+          "url": "https://en.wikipedia.org/wiki/Stuart_Townsend"
+        },
+        {
+          "reference": "Tolkien Gateway – Stuart Townsend",
+          "url": "https://tolkiengateway.net/wiki/Stuart_Townsend"
+        },
+        {
+          "reference": "MovieWeb – Actors almost cast as Aragorn",
+          "url": "https://movieweb.com/lord-of-the-rings-actors-almost-played-aragorn/"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : Remplacé au tout début du tournage parce que Peter Jackson le trouvait trop jeune."
+      }
+    },
+    {
+      "numero": 10,
+      "difficulte": 5,
+      "libelle_difficulte": "Impossible",
+      "type": "qcm-4",
+      "enonce": "Quel acteur de la Communauté a refusé le tatouage elfique commun ?",
+      "bonne_reponse": "John Rhys-Davies",
+      "distracteurs": [
+        "Sean Bean",
+        "Orlando Bloom",
+        "Ian McKellen"
+      ],
+      "anecdote": "Le tatouage représente le chiffre neuf en tengwar ; la doublure de John Rhys-Davies l'a fait à sa place.",
+      "media": {
+        "visuel_prompt": "Feuilles dorées tombant dans une forêt elfique baignée de lumière argentée",
+        "doodle": {
+          "traits": [
+            [
+              "M100 30 C150 60 150 140 100 170 C50 140 50 60 100 30 Z",
+              "acc"
+            ],
+            [
+              "M100 40 L100 185"
+            ],
+            [
+              "M100 80 L125 65 M100 80 L75 65 M100 115 L128 100 M100 115 L72 100"
+            ]
+          ]
+        }
+      },
+      "sources": [
+        {
+          "reference": "Tatouages des acteurs de la Communauté de l'anneau",
+          "url": "https://en.wikipedia.org/wiki/John_Rhys-Davies"
+        },
+        {
+          "reference": "IMDb – John Rhys-Davies Trivia",
+          "url": "https://www.imdb.com/name/nm0722636/trivia/"
+        },
+        {
+          "reference": "Screen Rant – Fellowship actors all got the same tattoo",
+          "url": "https://screenrant.com/lord-rings-tattoo-fellowship/"
+        }
+      ],
+      "fact_check": {
+        "statut": "verifie",
+        "nb_sources_concordantes": 3,
+        "note": "remarque : Sa doublure Brett Beattie s'est fait tatouer à sa place."
+      }
+    }
+  ],
+  "metadonnees_publication": {
+    "titre_youtube": "Quiz Le Seigneur des anneaux : seuls les vrais fans font 10/10 !",
+    "titre_court": "Quiz Seigneur des anneaux",
+    "description": "Teste tes connaissances sur la trilogie Le Seigneur des anneaux de Peter Jackson, de la Comté aux secrets de tournage. Dix questions de plus en plus difficiles t'attendent. Quiz non officiel réalisé par des fans, sans lien avec les ayants droit.",
+    "hashtags": [
+      "#SeigneurDesAnneaux",
+      "#Quiz",
+      "#Tolkien",
+      "#PeterJackson",
+      "#Cinema"
+    ],
+    "texte_miniature": "Vrai fan de Tolkien ?",
+    "question_commentaire": "Combien de bonnes réponses as-tu eues sur 10 ? Donne ton score en commentaire !"
+  }
+}
