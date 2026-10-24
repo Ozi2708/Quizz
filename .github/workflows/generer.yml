@@ -26,8 +26,8 @@ jobs:
     timeout-minutes: 30
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      SUJET: ${{ inputs.sujet || 'Capitales d''Europe' }}
-      CATEGORIE: ${{ inputs.categorie || 'geographie' }}
+      SUJET: ${{ inputs.sujet || 'Le Seigneur des anneaux' }}
+      CATEGORIE: ${{ inputs.categorie || 'film' }}
       QUESTIONS: ${{ inputs.questions || '10' }}
     steps:
       - uses: actions/checkout@v4
