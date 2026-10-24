@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - name: Rendu, images fixes de l'exemple en court et en long
+        run: |
+          npx playwright install --with-deps chromium
+          mkdir -p sortie
+          node templates/rendu/render.js templates/exemples/harry-potter-10q.json short sortie/court.png 30 --stills 1,12
+          node templates/rendu/render.js templates/exemples/harry-potter-10q.json long sortie/long.png 30 --stills 1,12
+      - name: Schéma et porte 1 sur les quiz du dépôt
+        run: |
+          for f in templates/exemples/*.json quizzes/*.json; do
+            [ -e "$f" ] || continue
+            echo "== $f"
+            npm run -s qa -- "$f" --brouillon
+          done

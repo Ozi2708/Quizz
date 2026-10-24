@@ -1,0 +1,56 @@
+name: Générer un quiz
+
+# Lancement manuel depuis l'onglet Actions (une fois sur main),
+# ou par un push sur une branche essai/** pour tester avant la fusion.
+on:
+  workflow_dispatch:
+    inputs:
+      sujet:
+        description: Sujet du quiz
+        required: true
+        default: Capitales d'Europe
+      categorie:
+        description: Catégorie (voir quiz.schema.json)
+        required: true
+        default: geographie
+      questions:
+        description: Nombre de questions
+        required: true
+        default: "10"
+  push:
+    branches: ["essai/**"]
+
+jobs:
+  generer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      SUJET: ${{ inputs.sujet || 'Capitales d''Europe' }}
+      CATEGORIE: ${{ inputs.categorie || 'geographie' }}
+      QUESTIONS: ${{ inputs.questions || '10' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Génération
+        run: npm run -s generer -- --sujet "$SUJET" --categorie "$CATEGORIE" --questions "$QUESTIONS" | tee generation.log
+      - name: Vérification (second Claude + recherche web)
+        run: |
+          fichier=$(ls -t quizzes/*.json | head -1)
+          echo "fichier=$fichier" >> "$GITHUB_ENV"
+          npm run -s verifier -- "$fichier" | tee verification.log || true
+      - name: Porte 1
+        run: npm run -s qa -- "$fichier" | tee qa.log || true
+      - name: Afficher le quiz
+        run: cat "$fichier"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quiz-genere
+          path: |
+            quizzes/*.json
+            *.log

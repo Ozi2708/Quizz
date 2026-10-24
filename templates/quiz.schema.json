@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "les-quizz/quiz.schema.json",
+  "title": "Quiz",
+  "description": "Format source d'un quiz. Un fichier = un quiz = une ou plusieurs vidéos (long + courts dérivés).",
+  "type": "object",
+  "required": ["id", "version_schema", "langue", "theme", "titre", "format_cible", "statut", "questions", "metadonnees_publication"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Identifiant unique, ex. harry-potter-10q-001"
+    },
+    "version_schema": { "const": "1.0" },
+    "langue": { "type": "string", "enum": ["fr", "en", "es"], "default": "fr" },
+    "theme": {
+      "type": "object",
+      "required": ["categorie", "sujet"],
+      "additionalProperties": false,
+      "properties": {
+        "categorie": {
+          "type": "string",
+          "enum": ["film", "serie", "musique", "jeu-video", "anime", "mix-pop-culture", "histoire", "economie", "geographie", "science", "culture-generale"],
+          "description": "V1 = pop culture ; V2 = catégories éducatives (histoire, economie...)"
+        },
+        "sujet": { "type": "string", "description": "Ex. Harry Potter" },
+        "sous_sujet": { "type": "string", "description": "Ex. Les livres uniquement, Tome 1, Les méchants" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "titre": { "type": "string", "maxLength": 100, "description": "Titre de travail, ex. 10 questions sur Harry Potter (de facile à impossible)" },
+    "format_cible": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["long-16x9", "court-9x16"] },
+      "description": "Formats à générer depuis ce quiz. Un long peut être découpé en plusieurs courts."
+    },
+    "statut": {
+      "type": "string",
+      "enum": ["brouillon", "fact-check-ok", "qa-ok", "publie", "rejete"],
+      "description": "Cycle de vie. Rien ne passe en rendu vidéo avant fact-check-ok."
+    },
+    "variante_ab": {
+      "type": "string",
+      "description": "Optionnel (V2) : étiquette de variante pour les A/B tests, ex. A-timer-5s / B-timer-8s"
+    },
+    "parametres_video": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "duree_timer_s": { "type": "number", "minimum": 3, "maximum": 20, "description": "Temps de réflexion par question" },
+        "duree_reponse_s": { "type": "number", "minimum": 1.5, "maximum": 10, "description": "Durée d'affichage de la bonne réponse + anecdote" },
+        "ordre_reponses": { "type": "string", "enum": ["aleatoire-fixe", "tel-quel"], "default": "aleatoire-fixe" },
+        "habillage": { "type": "string", "description": "Pack d'univers (rendu/doodles.js > PACKS) : motifs récurrents et couleur d'accent, ex. sorcellerie" },
+        "musique": { "type": "string", "description": "Identifiant de la piste libre de droits" },
+        "voix_off": { "type": "boolean", "default": false, "description": "V2 : ElevenLabs" }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "$ref": "#/$defs/question" },
+      "description": "Triées par difficulté croissante (vérifié par le contrôle qualité, pas par le schéma)."
+    },
+    "metadonnees_publication": {
+      "type": "object",
+      "required": ["titre_youtube", "description", "hashtags"],
+      "additionalProperties": false,
+      "properties": {
+        "titre_youtube": { "type": "string", "maxLength": 100 },
+        "titre_court": { "type": "string", "maxLength": 100, "description": "Titre pour Shorts / TikTok / Reels" },
+        "description": { "type": "string", "maxLength": 5000 },
+        "hashtags": { "type": "array", "items": { "type": "string", "pattern": "^#[^\\s#]+$" }, "maxItems": 15 },
+        "texte_miniature": { "type": "string", "maxLength": 30, "description": "3 à 5 mots max sur la miniature" },
+        "question_commentaire": { "type": "string", "description": "Appel à l'engagement, ex. Ton score en commentaire ?" }
+      }
+    }
+  },
+  "$defs": {
+    "question": {
+      "type": "object",
+      "required": ["numero", "difficulte", "type", "enonce", "bonne_reponse", "distracteurs", "sources", "fact_check"],
+      "additionalProperties": false,
+      "properties": {
+        "numero": { "type": "integer", "minimum": 1 },
+        "difficulte": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = tout le monde (non-fan inclus), 2 = a vu les films, 3 = fan, 4 = gros fan / lecteur, 5 = expert"
+        },
+        "libelle_difficulte": { "type": "string", "enum": ["Facile", "Moyen", "Difficile", "Expert", "Impossible"] },
+        "type": { "type": "string", "enum": ["qcm-4", "vrai-faux", "image", "son", "intrus"] },
+        "enonce": { "type": "string", "maxLength": 90, "description": "Lisible en moins de 4 s. Max ~90 caractères." },
+        "bonne_reponse": { "type": "string", "maxLength": 40 },
+        "distracteurs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "type": "string", "maxLength": 40 },
+          "description": "Plausibles, de même nature que la bonne réponse, idéalement issus du même univers. 3 pour qcm-4, 1 pour vrai-faux."
+        },
+        "anecdote": { "type": "string", "maxLength": 140, "description": "Fun fact affiché à la révélation. Doit aussi être sourcé." },
+        "media": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "visuel_prompt": { "type": "string", "description": "Prompt pour l'image de fond générée (jamais d'image officielle sous droits)" },
+            "extrait_audio": { "type": "string", "description": "Pour le type son : référence d'un extrait autorisé" },
+            "doodle": {
+              "description": "Micro-illustration liée à l'énoncé, sans donner la réponse (voir dessins-guide.md) : id de rendu/doodles.js, ou dessin propre à la question.",
+              "oneOf": [
+                { "type": "string", "pattern": "^[a-z0-9]+$" },
+                {
+                  "type": "object",
+                  "required": ["traits"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "traits": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 8,
+                      "items": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 3,
+                        "prefixItems": [
+                          { "type": "string", "minLength": 3, "description": "Chemin SVG dans un carré 0-200" },
+                          { "enum": ["paper", "acc", "ink", "accline", null] },
+                          { "type": "number", "minimum": 2, "maximum": 24 }
+                        ],
+                        "items": false
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["reference"],
+            "additionalProperties": false,
+            "properties": {
+              "reference": { "type": "string", "description": "Œuvre originale (tome, épisode, album) ou page web" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          }
+        },
+        "fact_check": {
+          "type": "object",
+          "required": ["statut"],
+          "additionalProperties": false,
+          "properties": {
+            "statut": { "type": "string", "enum": ["a-verifier", "verifie", "conteste"] },
+            "nb_sources_concordantes": { "type": "integer", "minimum": 0 },
+            "note": { "type": "string", "description": "Ambiguïté connue (traduction FR/EN, livre vs film...)" }
+          }
+        },
+        "part_estimee": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99,
+          "description": "Part estimée des fans qui trouvent la réponse (%), cohérente avec le barème de difficulté. Affichée « ≈ X % trouvent » puis « T'as bon ? TOP X % ». Absente : milieu du palier (90, 80, 50, 20, 4)."
+        }
+      }
+    }
+  }
+}
