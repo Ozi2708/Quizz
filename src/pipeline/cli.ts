@@ -4,6 +4,7 @@ import { parseArgs } from "node:util";
 import { lireQuiz, validerSchema } from "./schema.ts";
 import { estBloque, formaterControles, porte1 } from "./porte1.ts";
 import { porte2 } from "./porte2.ts";
+import { champsPublication, PLATEFORMES, publier, type OptionsPublication, type Plateforme } from "./publier.ts";
 import type { Categorie, Quiz } from "./types.ts";
 
 // Point d'entrée en ligne de commande : npm run <commande> -- <arguments>
@@ -12,6 +13,9 @@ import type { Categorie, Quiz } from "./types.ts";
 //   generer --sujet "..." --categorie ... [--questions 10] [--angle "..."]
 //   verifier <fichier>                    fact-check par un second Claude (recherche web)
 //   rendu <fichier> [--debut 1 --fin 5]   rendu court 9:16 puis porte 2
+//   publier <fichier> --video <mp4> [--plateformes youtube,tiktok,instagram] [--prive]
+//           [--programme 2026-11-02T18:00] [--tentative 2] [--a-blanc]
+//                                         portes 1 et 2, puis publication via Upload-Post
 
 const DOSSIER_QUIZ = "quizzes";
 
@@ -45,6 +49,12 @@ async function main(): Promise<number> {
       debut: { type: "string", default: "1" },
       fin: { type: "string", default: "5" },
       brouillon: { type: "boolean", default: false },
+      video: { type: "string" },
+      plateformes: { type: "string", default: PLATEFORMES.join(",") },
+      prive: { type: "boolean", default: false },
+      programme: { type: "string" },
+      tentative: { type: "string", default: "1" },
+      "a-blanc": { type: "boolean", default: false },
     },
   });
   const [commande, fichier] = positionals;
@@ -99,8 +109,53 @@ async function main(): Promise<number> {
       console.log(formaterControles(p2));
       return estBloque(p2) ? 1 : 0;
     }
+    case "publier": {
+      if (!values.video) throw new Error("--video est obligatoire");
+      const quiz = lireQuiz(fichier);
+      const plateformes = values.plateformes.split(",").map((p) => p.trim()) as Plateforme[];
+      const inconnues = plateformes.filter((p) => !PLATEFORMES.includes(p));
+      if (inconnues.length > 0) throw new Error(`Plateformes inconnues : ${inconnues.join(", ")} (possibles : ${PLATEFORMES.join(", ")})`);
+      const options: OptionsPublication = {
+        plateformes,
+        prive: values.prive,
+        programme: values.programme,
+        tentative: Number(values.tentative),
+      };
+
+      // Rien ne part sans fact-check : mêmes contrôles que pour le rendu, plus la porte 2 sur la vidéo envoyée.
+      const controles = [...porte1(quiz, { enoncesPublies: enoncesPublies(quiz.id) }), ...porte2(values.video)];
+      console.log(formaterControles(controles));
+      if (estBloque(controles)) {
+        console.error("Publication refusée : un contrôle bloquant a échoué");
+        return 1;
+      }
+      if (quiz.statut === "publie" && !options.prive && options.tentative === 1) {
+        console.error(`${quiz.id} est déjà publié (--tentative 2 pour relancer une plateforme en échec)`);
+        return 1;
+      }
+      if (values["a-blanc"]) {
+        // Aperçu de ce qui serait envoyé : aucun appel, aucune clé lue.
+        for (const [nom, valeur] of champsPublication(quiz, process.env.UPLOAD_POST_USER ?? "<profil>", options)) {
+          console.log(`${nom} = ${valeur}`);
+        }
+        return 0;
+      }
+
+      const resultat = await publier(quiz, values.video, options);
+      if (resultat.statut === "programme") console.log(`Publication programmée (${resultat.id})`);
+      for (const r of resultat.resultats) {
+        console.log(`${r.plateforme} : ${r.ok ? "publié" : "échec"}${r.url ? ` ${r.url}` : ""}${r.message ? ` (${r.message})` : ""}`);
+      }
+      const reussies = resultat.statut === "programme" ? plateformes.length : resultat.resultats.filter((r) => r.ok).length;
+      // Dès qu'une plateforme a publié en public, les questions comptent comme publiées (anti-doublon).
+      if (!options.prive && reussies > 0) {
+        quiz.statut = "publie";
+        enregistrer(quiz, fichier);
+      }
+      return reussies === plateformes.length ? 0 : 1;
+    }
     default:
-      console.error("Commandes : valider, qa, generer, verifier, rendu");
+      console.error("Commandes : valider, qa, generer, verifier, rendu, publier");
       return 1;
   }
 }

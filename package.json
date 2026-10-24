@@ -10,6 +10,7 @@
     "generer": "tsx src/pipeline/cli.ts generer",
     "verifier": "tsx src/pipeline/cli.ts verifier",
     "rendu": "tsx src/pipeline/cli.ts rendu",
+    "publier": "tsx src/pipeline/cli.ts publier",
     "studio": "remotion studio src/video/index.ts",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"

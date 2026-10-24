@@ -1,0 +1,66 @@
+name: Publier un quiz
+
+# Lancement manuel depuis l'onglet Actions (une fois sur main) : rendu du court, portes 1 et 2,
+# puis publication via Upload-Post. Le job attend ton feu vert si l'environnement
+# « publication » exige un relecteur (Settings, Environments).
+on:
+  workflow_dispatch:
+    inputs:
+      quiz:
+        description: Fichier du quiz vérifié, ex. quizzes/capitales-d-europe-10q-8a6a39.json
+        required: true
+      plateformes:
+        description: Plateformes séparées par des virgules (youtube, tiktok, instagram)
+        required: true
+        default: youtube,tiktok
+      prive:
+        description: Essai privé (YouTube en privé, TikTok visible par toi seul, pas d'Instagram)
+        type: boolean
+        default: true
+      debut:
+        description: Première question du court
+        required: true
+        default: "1"
+      fin:
+        description: Dernière question du court
+        required: true
+        default: "5"
+
+permissions:
+  contents: write
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: publication
+    env:
+      UPLOAD_POST_API_KEY: ${{ secrets.UPLOAD_POST_API_KEY }}
+      UPLOAD_POST_USER: ${{ vars.UPLOAD_POST_USER }}
+      QUIZ: ${{ inputs.quiz }}
+      PLATEFORMES: ${{ inputs.plateformes }}
+      DEBUT: ${{ inputs.debut }}
+      FIN: ${{ inputs.fin }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Installer ffmpeg (contrôles de la porte 2)
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: npm ci
+      - name: Rendu du court
+        run: npm run -s rendu -- "$QUIZ" --debut "$DEBUT" --fin "$FIN"
+      - name: Publication
+        run: |
+          id=$(node -p 'JSON.parse(require("fs").readFileSync(process.env.QUIZ, "utf8")).id')
+          npm run -s publier -- "$QUIZ" --video "sortie/$id-court-q$DEBUT-$FIN.mp4" --plateformes "$PLATEFORMES" ${{ inputs.prive && '--prive' || '' }}
+      # Le statut « publie » alimente le contrôle anti-doublon des prochains quiz.
+      - name: Enregistrer le statut publié
+        if: ${{ !inputs.prive && !cancelled() }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$QUIZ"
+          git diff --cached --quiet || { git commit -m "Quiz publié : $QUIZ" && git push; }

@@ -8,6 +8,7 @@ Projet de chaînes de quiz vidéo automatisées (YouTube, TikTok, Instagram). To
 - `templates/standards-qualite.md` décrit les 3 portes. Les règles automatisables sont dans `src/pipeline/porte1.ts` (contenu) et `src/pipeline/porte2.ts` (vidéo).
 - `templates/storyboard-*.md` décrit le déroulé des vidéos ; `src/video/timing.ts` doit rester aligné sur le storyboard court.
 - Les quiz générés vont dans `quizzes/`, les vidéos dans `sortie/` (non versionné).
+- La publication passe par Upload-Post (`src/pipeline/publier.ts`, workflow `publier.yml`) : l'API officielle de TikTok refuse les outils perso et YouTube garde en privé les vidéos d'un projet non audité.
 
 ## Règles
 
