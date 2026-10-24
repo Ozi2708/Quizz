@@ -103,3 +103,31 @@ test("la publication envoie la vidéo puis suit chaque plateforme jusqu'au résu
     { plateforme: "tiktok", ok: false, message: "compte non connecté dans Upload-Post", url: undefined },
   ]);
 });
+
+test("un envoi mis en file d'attente (job_id) est suivi jusqu'au résultat", async (t) => {
+  const video = path.join(mkdtempSync(path.join(tmpdir(), "quizz-")), "court.mp4");
+  writeFileSync(video, Buffer.alloc(16));
+  process.env.UPLOAD_POST_API_KEY = "cle-test";
+  process.env.UPLOAD_POST_USER = "quizz";
+  t.after(() => {
+    delete process.env.UPLOAD_POST_API_KEY;
+    delete process.env.UPLOAD_POST_USER;
+  });
+
+  const reponses = [
+    Response.json({ success: true, job_id: "file-42" }, { status: 202 }),
+    Response.json({ status: "queued", total: 1, results: [] }),
+    Response.json({ status: "completed", total: 1, results: [{ platform: "youtube", success: true, status: "completed" }] }),
+  ];
+  const urls: string[] = [];
+  t.mock.method(globalThis, "fetch", async (url: string) => {
+    urls.push(url);
+    return reponses.shift();
+  });
+
+  const resultat = await publier(exemple(), video, { plateformes: ["youtube"], prive: true }, { intervalleMs: 1, delaiMaxMs: 5_000 });
+
+  assert.equal(resultat.statut, "completed");
+  assert.match(urls[2], /status\?job_id=file-42$/);
+  assert.equal(resultat.resultats[0].ok, true);
+});

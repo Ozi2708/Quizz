@@ -142,6 +142,7 @@ async function main(): Promise<number> {
 
       const resultat = await publier(quiz, values.video, options);
       if (resultat.statut === "programme") console.log(`Publication programmée (${resultat.id})`);
+      else if (resultat.resultats.length === 0) console.log(`Upload-Post : ${resultat.statut}, aucune plateforme n'a répondu (${resultat.id})`);
       for (const r of resultat.resultats) {
         console.log(`${r.plateforme} : ${r.ok ? "publié" : "échec"}${r.url ? ` ${r.url}` : ""}${r.message ? ` (${r.message})` : ""}`);
       }
