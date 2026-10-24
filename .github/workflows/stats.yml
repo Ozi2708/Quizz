@@ -1,0 +1,46 @@
+name: Statistiques
+
+# Chaque matin : relevé des chiffres YouTube (et des lignes TikTok saisies à la main),
+# ajouté à stats/releves.jsonl, puis tableau de bord stats/RAPPORT.md.
+# Aussi lançable à la main depuis l'onglet Actions. Configuration : stats/README.md.
+on:
+  schedule:
+    - cron: "30 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: statistiques
+
+jobs:
+  releve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      YOUTUBE_CHAINE: ${{ vars.YOUTUBE_CHAINE }}
+      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Relevé et tableau de bord
+        run: |
+          npm run -s stats
+          cat stats/RAPPORT.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Enregistrer le relevé
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stats/
+          git diff --cached --quiet && exit 0
+          git commit -m "Statistiques du $(date -u +%F) [skip ci]"
+          # Une publication a pu pousser entre-temps.
+          git pull --rebase && git push
