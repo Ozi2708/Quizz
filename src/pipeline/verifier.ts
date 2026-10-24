@@ -11,10 +11,10 @@ const LETTRES = ["A", "B", "C", "D"];
 
 const SYSTEME = `Tu vérifies un quiz avant publication. Pour chaque question, choisis la réponse correcte parmi les choix proposés. Fais des recherches web pour confirmer chaque réponse avec au moins une source fiable et indépendante (encyclopédie, site officiel, presse), même quand tu crois la connaître.
 
-Signale toute ambiguïté : plusieurs choix défendables, différence livre/film ou VF/VO, fait contesté ou daté.
+Remplis « ambiguite » seulement si, tel que l'énoncé est formulé, un spectateur pourrait défendre un autre choix (deux réponses correctes, différence livre/film ou VF/VO non précisée, fait contesté). Si l'énoncé lève déjà l'ambiguïté, ou pour un simple détail ou une précision, mets null et écris-le dans « remarque ».
 
 Termine ta réponse par un unique bloc \`\`\`json contenant un tableau, un objet par question :
-{"numero": 1, "choix": "texte exact du choix retenu", "certitude": "certaine" | "probable" | "incertaine", "sources": [{"reference": "nom de la page", "url": "https://..."}], "ambiguite": "explication ou null"}`;
+{"numero": 1, "choix": "texte exact du choix retenu", "certitude": "certaine" | "probable" | "incertaine", "sources": [{"reference": "nom de la page", "url": "https://..."}], "ambiguite": "explication ou null", "remarque": "précision utile ou null"}`;
 
 interface Verdict {
   numero: number;
@@ -22,6 +22,7 @@ interface Verdict {
   certitude: "certaine" | "probable" | "incertaine";
   sources: Source[];
   ambiguite: string | null;
+  remarque?: string | null;
 }
 
 function extraireJson(contenu: Anthropic.Beta.Messages.BetaContentBlock[]): Verdict[] {
@@ -51,6 +52,7 @@ export function appliquerVerdicts(quiz: Quiz, verdicts: Verdict[]): Quiz {
     if (normaliser(v.choix) !== normaliser(q.bonne_reponse)) fautes.push(`le vérificateur répond « ${v.choix} »`);
     if (v.certitude === "incertaine") fautes.push("certitude insuffisante");
     if (v.ambiguite) fautes.push(`ambiguïté : ${v.ambiguite}`);
+    const note = [...fautes, ...(v.remarque ? [`remarque : ${v.remarque}`] : [])].join(" ; ");
     if (concordantes < 2) fautes.push("moins de 2 sources concordantes");
 
     return {
@@ -59,7 +61,7 @@ export function appliquerVerdicts(quiz: Quiz, verdicts: Verdict[]): Quiz {
       fact_check: {
         statut: fautes.length ? ("conteste" as const) : ("verifie" as const),
         nb_sources_concordantes: concordantes,
-        ...(fautes.length ? { note: fautes.join(" ; ") } : {}),
+        ...(note ? { note } : {}),
       },
     };
   });

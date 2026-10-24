@@ -69,3 +69,20 @@ test("un court de 5 questions dure moins de 60 s", () => {
   assert.ok(plan.total / 30 < 60);
   assert.equal(plan.segments.length, 5);
 });
+
+test("une simple remarque du vérificateur ne conteste pas la question", () => {
+  const quiz = exemple();
+  const q = quiz.questions[0];
+  const resultat = appliquerVerdicts(quiz, [
+    {
+      numero: 1,
+      choix: q.bonne_reponse,
+      certitude: "certaine",
+      sources: [{ reference: "Source", url: "https://exemple.org/1" }],
+      ambiguite: null,
+      remarque: "nom historique également correct",
+    },
+  ]);
+  assert.equal(resultat.questions[0].fact_check.statut, "verifie");
+  assert.match(resultat.questions[0].fact_check.note ?? "", /remarque/);
+});
