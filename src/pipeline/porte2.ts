@@ -18,7 +18,9 @@ export interface CibleVideo {
   dureeMaxS: number;
 }
 
-export const CIBLE_COURT: CibleVideo = { largeur: 1080, hauteur: 1920, fps: 30, dureeMaxS: 60 };
+// Shorts, TikTok et Reels acceptent plus long : on garde de la marge pour le temps de réflexion (storyboard court).
+export const CIBLE_COURT: CibleVideo = { largeur: 1080, hauteur: 1920, fps: 30, dureeMaxS: 90 };
+export const CIBLE_LONG: CibleVideo = { largeur: 1920, hauteur: 1080, fps: 30, dureeMaxS: 20 * 60 };
 
 export function sonder(fichier: string): { flux: Flux[]; duree: number } {
   const brut = execFileSync(
@@ -50,7 +52,7 @@ export function porte2(fichier: string, cible: CibleVideo = CIBLE_COURT): Contro
       regle: "Piste audio présente",
       bloquant: false,
       ok: Boolean(audio),
-      detail: audio ? undefined : "pas encore de musique ni de bruitages (bibliothèque sonore à choisir)",
+      detail: audio ? undefined : "aucune piste son (audio.py n'a pas tourné)",
     },
   ];
 }

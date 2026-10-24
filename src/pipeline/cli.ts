@@ -3,7 +3,7 @@ import path from "node:path";
 import { parseArgs } from "node:util";
 import { lireQuiz, validerSchema } from "./schema.ts";
 import { estBloque, formaterControles, porte1 } from "./porte1.ts";
-import { porte2 } from "./porte2.ts";
+import { CIBLE_COURT, CIBLE_LONG, porte2 } from "./porte2.ts";
 import { champsPublication, PLATEFORMES, publier, type OptionsPublication, type Plateforme } from "./publier.ts";
 import type { Categorie, Quiz } from "./types.ts";
 
@@ -12,7 +12,7 @@ import type { Categorie, Quiz } from "./types.ts";
 //   qa <fichier> [--brouillon]            porte 1 (contenu)
 //   generer --sujet "..." --categorie ... [--questions 10] [--angle "..."]
 //   verifier <fichier>                    fact-check par un second Claude (recherche web)
-//   rendu <fichier> [--debut 1 --fin 5]   rendu court 9:16 puis porte 2
+//   rendu <fichier> [--long]              rendu court 9:16 (ou long 16:9) puis porte 2
 //   publier <fichier> --video <mp4> [--plateformes youtube,tiktok,instagram] [--prive]
 //           [--programme 2026-11-02T18:00] [--tentative 2] [--a-blanc]
 //                                         portes 1 et 2, puis publication via Upload-Post
@@ -46,8 +46,7 @@ async function main(): Promise<number> {
       categorie: { type: "string", default: "culture-generale" },
       questions: { type: "string", default: "10" },
       angle: { type: "string" },
-      debut: { type: "string", default: "1" },
-      fin: { type: "string", default: "5" },
+      long: { type: "boolean", default: false },
       brouillon: { type: "boolean", default: false },
       video: { type: "string" },
       plateformes: { type: "string", default: PLATEFORMES.join(",") },
@@ -102,10 +101,10 @@ async function main(): Promise<number> {
         console.error(`Rendu refusé, porte 1 bloquée (ajouter --brouillon pour un essai) :\n${formaterControles(controles)}`);
         return 1;
       }
-      const { rendreCourt } = await import("./rendu.ts");
-      const video = await rendreCourt(quiz, { debut: Number(values.debut), fin: Number(values.fin) });
+      const { rendre } = await import("./rendu.ts");
+      const video = rendre(fichier, quiz.id, values.long ? "long" : "court");
       console.log(`Vidéo : ${video}`);
-      const p2 = porte2(video);
+      const p2 = porte2(video, values.long ? CIBLE_LONG : CIBLE_COURT);
       console.log(formaterControles(p2));
       return estBloque(p2) ? 1 : 0;
     }

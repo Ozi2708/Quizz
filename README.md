@@ -6,10 +6,12 @@ Pipeline automatisé de chaînes de quiz (YouTube, TikTok, Instagram) : écritur
 
 ```bash
 npm install
-cp .env.example .env   # puis renseigner ANTHROPIC_API_KEY
+npx playwright install chromium   # navigateur du rendu vidéo
+pip install numpy                 # bande son (templates/rendu/audio.py)
+cp .env.example .env              # puis renseigner ANTHROPIC_API_KEY
 ```
 
-Node 20 ou plus et `ffmpeg` (pour `ffprobe`) sont nécessaires.
+Node 20 ou plus, Python 3 et `ffmpeg` sont nécessaires.
 
 ## Utilisation
 
@@ -23,15 +25,14 @@ npm run verifier -- quizzes/<id>.json
 # 3. Contrôler le contenu (porte 1)
 npm run qa -- quizzes/<id>.json
 
-# 4. Rendre un court 9:16 (questions 1 à 5) puis contrôler la vidéo (porte 2)
-npm run rendu -- quizzes/<id>.json --debut 1 --fin 5
+# 4. Rendre le court 9:16 (5 questions, une par niveau) puis contrôler la vidéo (porte 2)
+npm run rendu -- quizzes/<id>.json            # --long pour le 16:9 avec toutes les questions
 
 # 5. Publier le court via Upload-Post (--a-blanc pour voir ce qui partirait, sans rien envoyer)
-npm run publier -- quizzes/<id>.json --video sortie/<id>-court-q1-5.mp4 --plateformes youtube,tiktok --prive
-
-# Prévisualiser et ajuster le template dans le navigateur
-npm run studio
+npm run publier -- quizzes/<id>.json --video sortie/<id>-court.mp4 --plateformes youtube,tiktok --prive
 ```
+
+Pour régler le design, ouvrir `templates/rendu/template.html` dans un navigateur ; `node templates/rendu/render.js <quiz> short <sortie>.png 30 --stills 3,12` capture des images fixes.
 
 `--brouillon` sur `qa` et `rendu` permet un essai sans fact-check. La publication, elle, exige toujours le fact-check.
 
@@ -52,12 +53,12 @@ Un environnement GitHub `publication` avec relecteur obligatoire fait attendre c
 |---|---|
 | `templates/` | Schéma du format quiz, storyboards, standards qualité, exemple |
 | `src/pipeline/` | Génération, vérification, contrôles qualité, rendu, ligne de commande |
-| `src/video/` | Templates vidéo Remotion (court 9:16 pour l'instant) |
+| `templates/rendu/` | Rendu vidéo : gabarit animé, dessins, polices, bande son, capture par Playwright |
 | `quizzes/` | Quiz générés |
 | `tests/` | Tests automatiques |
 
 ## Avancement
 
-Phase 1 (prototype) en cours : génération, vérification, porte 1, template court et porte 2 technique. À venir : format long 16:9, musique et bruitages, contrôle visuel des images clés, publication quotidienne automatique, collecte des statistiques.
+Phase 1 (prototype) en cours : génération, vérification, porte 1, rendu court et long, porte 2 technique, publication via Upload-Post. À venir : musique signature (la bande son actuelle est synthétisée), contrôle visuel des images clés, publication quotidienne automatique, collecte des statistiques.
 
-Remotion est gratuit pour un particulier ou une entreprise de 3 personnes au plus ; au-delà, une licence est nécessaire.
+Les polices du rendu sont sous licence libre (SIL OFL 1.1, Apache 2.0 pour Permanent Marker) : licences dans `templates/rendu/fonts/`.

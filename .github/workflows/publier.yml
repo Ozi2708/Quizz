@@ -17,14 +17,6 @@ on:
         description: Essai privé (YouTube en privé, TikTok visible par toi seul, pas d'Instagram)
         type: boolean
         default: true
-      debut:
-        description: Première question du court
-        required: true
-        default: "1"
-      fin:
-        description: Dernière question du court
-        required: true
-        default: "5"
 
 permissions:
   contents: write
@@ -39,23 +31,28 @@ jobs:
       UPLOAD_POST_USER: ${{ vars.UPLOAD_POST_USER }}
       QUIZ: ${{ inputs.quiz }}
       PLATEFORMES: ${{ inputs.plateformes }}
-      DEBUT: ${{ inputs.debut }}
-      FIN: ${{ inputs.fin }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - name: Installer ffmpeg (contrôles de la porte 2)
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Installer ffmpeg et numpy (assemblage, bande son, porte 2)
+        run: |
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+          pip install numpy
       - run: npm ci
+      - name: Installer Chromium pour le rendu
+        run: npx playwright install --with-deps chromium
       - name: Rendu du court
-        run: npm run -s rendu -- "$QUIZ" --debut "$DEBUT" --fin "$FIN"
+        run: npm run -s rendu -- "$QUIZ"
       - name: Publication
         run: |
           id=$(node -p 'JSON.parse(require("fs").readFileSync(process.env.QUIZ, "utf8")).id')
-          npm run -s publier -- "$QUIZ" --video "sortie/$id-court-q$DEBUT-$FIN.mp4" --plateformes "$PLATEFORMES" ${{ inputs.prive && '--prive' || '' }}
+          npm run -s publier -- "$QUIZ" --video "sortie/$id-court.mp4" --plateformes "$PLATEFORMES" ${{ inputs.prive && '--prive' || '' }}
       # Le statut « publie » alimente le contrôle anti-doublon des prochains quiz.
       - name: Enregistrer le statut publié
         if: ${{ !inputs.prive && !cancelled() }}

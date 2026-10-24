@@ -72,7 +72,7 @@ export function appliquerVerdicts(quiz: Quiz, verdicts: Verdict[]): Quiz {
 export async function verifierQuiz(quiz: Quiz): Promise<Quiz> {
   const enonces = quiz.questions
     .map((q) => {
-      const { choix } = melangerChoix(quiz, q);
+      const { choix } = melangerChoix(q);
       return `Question ${q.numero} : ${q.enonce}\n${choix.map((c, i) => `  ${LETTRES[i]}. ${c}`).join("\n")}`;
     })
     .join("\n\n");

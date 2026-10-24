@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
 import { test } from "node:test";
+import vm from "node:vm";
 import { assembler, fautesDifficulte } from "../src/pipeline/generer.ts";
 import { lireQuiz } from "../src/pipeline/schema.ts";
 import { melangerChoix } from "../src/pipeline/melange.ts";
 import { estBloque, porte1 } from "../src/pipeline/porte1.ts";
 import { appliquerVerdicts } from "../src/pipeline/verifier.ts";
-import { planCourt } from "../src/video/timing.ts";
 import type { Quiz } from "../src/pipeline/types.ts";
 
 const exemple = (): Quiz => structuredClone(lireQuiz("templates/exemples/harry-potter-10q.json"));
@@ -38,13 +39,23 @@ test("la bonne réponse parmi les distracteurs bloque", () => {
   assert.equal(regle(quiz, "La bonne réponse")?.ok, false);
 });
 
-test("le mélange des réponses est reproductible et garde la bonne réponse", () => {
-  const quiz = exemple();
-  for (const q of quiz.questions) {
-    const a = melangerChoix(quiz, q);
-    assert.deepEqual(a, melangerChoix(quiz, q));
-    assert.equal(a.choix[a.indexBonne], q.bonne_reponse);
-    assert.equal(a.choix.length, q.distracteurs.length + 1);
+test("l'ordre des réponses est celui de la vidéo (choices() du gabarit de rendu)", () => {
+  // La fonction du gabarit est extraite en suivant ses accolades, puis exécutée à part.
+  const gabarit = readFileSync("templates/rendu/template.html", "utf8");
+  const debut = gabarit.indexOf("function choices(q){");
+  assert.ok(debut >= 0, "choices() introuvable dans template.html");
+  let fin = gabarit.indexOf("{", debut);
+  for (let profondeur = 0; ; fin++) {
+    if (gabarit[fin] === "{") profondeur++;
+    if (gabarit[fin] === "}" && --profondeur === 0) break;
+  }
+  const choices = vm.runInNewContext(`(${gabarit.slice(debut, fin + 1)})`) as (q: unknown) => { out: string[]; pos: number };
+  for (const q of exemple().questions) {
+    const { out, pos } = choices(q);
+    const { choix, indexBonne } = melangerChoix(q);
+    assert.deepEqual([...choix], [...out], `Q${q.numero}`);
+    assert.equal(indexBonne, pos);
+    assert.equal(choix[indexBonne], q.bonne_reponse);
   }
 });
 
@@ -65,10 +76,16 @@ test("le fact-check marque vérifié seulement si la réponse concorde avec une 
   assert.equal(resultat.statut, "brouillon");
 });
 
-test("un court de 5 questions dure moins de 60 s", () => {
-  const plan = planCourt([1, 2, 3, 4, 5]);
-  assert.ok(plan.total / 30 < 60);
-  assert.equal(plan.segments.length, 5);
+test("le gabarit de rendu trouve sa feuille de polices, ses polices et ses dessins", () => {
+  const dossier = "templates/rendu";
+  const gabarit = readFileSync(`${dossier}/template.html`, "utf8");
+  const polices = readFileSync(`${dossier}/fonts.css`, "utf8");
+  const fichiers = [
+    ...[...gabarit.matchAll(/<(?:script|link)[^>]*(?:src|href)="([^"]+)"/g)].map((m) => m[1]),
+    ...[...polices.matchAll(/url\(([^)]+)\)/g)].map((m) => m[1]),
+  ];
+  assert.ok(fichiers.includes("doodles.js") && fichiers.length >= 3);
+  for (const f of fichiers) assert.ok(existsSync(`${dossier}/${f}`), `${f} manquant`);
 });
 
 test("une simple remarque du vérificateur ne conteste pas la question", () => {

@@ -26,7 +26,7 @@ Chaque quiz passe 3 portes. Une vidéo n'est publiée que si toutes les lignes *
 
 **Bloquant**
 - [ ] Résolution et ratio corrects (1920×1080 ou 1080×1920), 30 i/s *(auto)*
-- [ ] Durée dans la cible du format, court < 60 s *(auto)*
+- [ ] Durée dans la cible du format, court < 90 s (storyboard : 45 à 75 s) *(auto)*
 - [ ] Aucun texte hors zone de sécurité *(auto sur les coordonnées du gabarit)*
 - [ ] Chaque énoncé reste affiché au moins 1 s par tranche de 15 caractères *(auto)*
 - [ ] Le texte affiché correspond exactement au JSON, et la réponse surlignée est la bonne *(auto, OCR sur les images clés)*

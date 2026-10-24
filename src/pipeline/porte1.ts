@@ -166,7 +166,7 @@ export function porte1(quiz: Quiz, options: OptionsPorte1 = {}): Controle[] {
   const qcm = qs.filter((q) => q.type === "qcm-4");
   if (qcm.length >= 4) {
     const positions = [0, 0, 0, 0];
-    for (const q of qcm) positions[melangerChoix(quiz, q).indexBonne]++;
+    for (const q of qcm) positions[melangerChoix(q).indexBonne]++;
     const max = Math.max(...positions);
     ajouter(
       "Bonne réponse répartie entre A, B, C et D",

@@ -144,8 +144,8 @@ export function assembler(demande: DemandeQuiz, contenu: ContenuQuiz, id: string
     format_cible: ["court-9x16", "long-16x9"],
     statut: "brouillon",
     parametres_video: {
-      duree_timer_s: 8,
-      duree_reponse_s: 4,
+      duree_timer_s: 12,
+      duree_reponse_s: 5,
       ordre_reponses: "aleatoire-fixe",
       habillage: contenu.habillage,
       voix_off: false,

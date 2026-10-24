@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* Direction « collage » : papier, scotch, feutre, couleurs franches qui chauffent avec la difficulté */
+:root{--ink:#111;--paper:#fffdf6;--red:#e8202a;--bg:#b8f36b;--fg:#111;--acc:#111}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif}
+body.long{--W:1920px;--H:1080px}
+body.short{--W:1080px;--H:1920px}
+#stage{position:absolute;inset:0}
+#bg{position:absolute;inset:-40px;background:var(--bg)}
+#dots{position:absolute;inset:-40px;background-image:radial-gradient(var(--dot) 22%,transparent 24%);background-size:26px 26px;opacity:.18;
+  -webkit-mask-image:radial-gradient(circle at 100% 0%,#000 0,transparent 55%),radial-gradient(circle at 0% 100%,#000 0,transparent 45%);
+  -webkit-mask-composite:source-over}
+#grain{position:absolute;inset:0;opacity:.22;mix-blend-mode:multiply;pointer-events:none}
+#bignum{position:absolute;font-family:'Archivo Black';color:transparent;-webkit-text-stroke:6px var(--fg);line-height:.8;opacity:.9;letter-spacing:-.04em}
+.layer{position:absolute;inset:0}
+#quiz,#overlay{opacity:0}
+.mono{font-family:'Space Mono',monospace;font-weight:700}
+#diff{position:absolute;font-family:'Archivo Black';text-transform:uppercase;background:var(--fg);color:var(--bg);padding:10px 22px 12px;letter-spacing:.02em;box-shadow:6px 6px 0 var(--paper)}
+#qnum{position:absolute;color:var(--fg);letter-spacing:.06em}
+#tally{position:absolute;display:flex;gap:10px;align-items:center}
+#tally i{width:34px;height:34px;border:4px solid var(--fg);border-radius:50%;display:block}
+#tally i.on{background:var(--fg)}
+.card{position:absolute;background:var(--paper);border:6px solid var(--ink);box-shadow:14px 14px 0 var(--ink)}
+.tape{position:absolute;width:190px;height:54px;background:rgba(255,245,200,.72);border-left:3px dashed rgba(0,0,0,.08);border-right:3px dashed rgba(0,0,0,.08)}
+#qtext{font-weight:800;line-height:1.08;letter-spacing:-.01em}
+#qtext span{display:inline-block;margin-right:.24em;transform-origin:50% 80%}
+#answers{position:absolute;display:grid}
+.ans{position:relative;display:flex;align-items:center;background:var(--paper);border:5px solid var(--ink);box-shadow:9px 9px 0 var(--ink);font-weight:800}
+.ans b{display:grid;place-items:center;background:var(--ink);color:var(--paper);font-family:'Space Mono';font-weight:700;flex:none;align-self:stretch}
+.ans .t{padding:0 26px}
+.ans .strike{position:absolute;left:4%;right:4%;top:50%;height:12px;margin-top:-6px;background:var(--red);border-radius:6px;transform-origin:0 50%;opacity:.92}
+.ans svg{position:absolute;inset:-26px -30px;overflow:visible;pointer-events:none}
+.ans svg path{fill:none;stroke:var(--red);stroke-width:9;stroke-linecap:round}
+.ans.ok{background:#fff}
+.ans.off{background:#d9d6cc;color:#6b6860}
+.ans.off b{background:#6b6860}
+#timer{position:absolute}
+.ruler{position:relative;height:100%;border:6px solid var(--ink);background:var(--paper);box-shadow:9px 9px 0 var(--ink);overflow:hidden}
+.ruler .fill{position:absolute;inset:0 auto 0 0;background:var(--ink)}
+.ruler .ticks{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(12.5% - 4px),var(--paper) calc(12.5% - 4px) 12.5%)}
+.ruler .n{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:'Archivo Black';color:var(--red);mix-blend-mode:normal}
+.stamp{width:100%;height:100%;border-radius:50%;border:8px solid var(--ink);background:var(--paper);box-shadow:10px 10px 0 var(--ink);display:grid;place-items:center;font-family:'Archivo Black';position:relative;overflow:hidden}
+#postit{position:absolute;background:#fff27a;box-shadow:6px 8px 0 rgba(0,0,0,.85);border:4px solid var(--ink);font-weight:500;line-height:1.25}
+#postit .lbl{font-family:'Permanent Marker';color:var(--red);display:block;margin-bottom:6px}
+#wipe{position:absolute;top:-10%;bottom:-10%;width:140%;left:-20%;border-left:14px solid var(--ink);border-right:14px solid var(--ink);transform:translateX(-200%) skewX(-12deg)}
+#overlay{display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.kin{font-family:'Archivo Black';line-height:.92;text-transform:uppercase;letter-spacing:-.02em}
+.kin span{display:inline-block;margin-right:.18em}
+.kin .hl{background:var(--fg);color:var(--bg);padding:0 .12em}
+.sub{font-weight:800;margin-top:28px;background:var(--paper);border:5px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:14px 24px}
+.marker{font-family:'Permanent Marker';color:var(--red)}
+.tiers{display:grid;gap:18px}
+/* tampon « T'es dans le top X % » posé sur la bonne réponse */
+.brag{position:absolute;right:-6px;top:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--paper);border:5px solid var(--red);color:var(--red);padding:6px 16px 8px;line-height:1;box-shadow:5px 5px 0 var(--ink);z-index:3;pointer-events:none}
+.brag i{font-style:normal;font-family:'Permanent Marker';font-size:.5em;margin-bottom:4px}
+.brag .big{font-family:'Archivo Black';font-size:.78em;letter-spacing:-.01em;white-space:nowrap}
+.short .brag{font-size:66px}.long .brag{font-size:66px}
+#pct{position:absolute;font-family:'Permanent Marker';color:var(--fg)}
+.short #pct{top:256px;font-size:34px}.long #pct{left:620px;top:78px;font-size:34px}
+.tier{display:flex;align-items:center;gap:24px;background:var(--paper);border:5px solid var(--ink);box-shadow:8px 8px 0 #c6ff3d;padding:12px 28px;font-weight:800;font-size:48px}
+.tier em{font-style:normal;font-family:'Space Mono';font-weight:700;background:var(--ink);color:#c6ff3d;padding:2px 14px;min-width:4.2ch;text-align:center}
+#doodle{position:absolute;pointer-events:none}
+#doodle svg,.hookdood svg{width:100%;height:100%;overflow:visible}
+.hookdood{pointer-events:none;align-self:flex-end;flex:none}
+/* format court : zones sûres haut 220, bas 480, droite 140 */
+.short #diff{left:60px;top:250px;font-size:34px;transform:rotate(-3deg)}
+.short #qnum{right:140px;top:262px;font-size:34px}
+.short #tally{left:60px;top:1362px;display:none}
+.short #bignum{left:40px;top:1430px;font-size:560px}
+.short #qcard{left:60px;right:150px;top:350px;padding:34px 36px 38px}
+.short #qtext{font-size:64px}
+.short .tape{left:50%;margin-left:-95px;top:-30px}
+.short #answers{left:60px;right:150px;top:830px;gap:24px}
+.short .ans{height:108px;font-size:46px}
+.short .ans b{width:96px;font-size:44px}
+.short #answers.vf{gap:40px}
+.short #answers.vf .ans{height:160px;font-size:60px}
+.long #answers.vf .ans{height:180px;font-size:64px}
+.short #timer{left:60px;right:150px;top:1366px;height:72px}
+.short #doodle{right:80px;top:500px;width:360px;height:360px}
+.short .hookdood{width:260px;height:260px;margin-top:40px}
+.short .ruler .n{font-size:58px}
+.short #postit{left:80px;right:170px;top:1352px;padding:16px 22px;font-size:32px}
+.short #postit .lbl{font-size:30px}
+.short #overlay{padding:220px 150px 480px 60px}
+.short .kin{font-size:132px}
+.short .sub{font-size:44px}
+/* format long */
+.long #diff{left:120px;top:70px;font-size:36px;transform:rotate(-2deg)}
+.long #qnum{left:420px;top:84px;font-size:34px}
+.long #tally{right:120px;top:80px}
+.long #bignum{right:80px;bottom:-40px;font-size:620px;opacity:.5}
+.long #qcard{left:120px;right:780px;top:170px;padding:36px 44px 40px}
+.long #qtext{font-size:70px}
+.long .tape{left:60px;top:-28px;transform:rotate(-4deg)}
+.long #answers{left:120px;right:120px;top:540px;grid-template-columns:1fr 1fr;gap:34px 44px}
+.long .ans{height:124px;font-size:50px}
+.long .ans b{width:104px;font-size:48px}
+.long #timer{right:150px;top:150px;width:290px;height:290px}
+.long #doodle{left:1150px;top:110px;width:350px;height:350px}
+.long .hookdood{width:260px;height:260px;margin-top:10px}
+.long #postit{left:140px;right:640px;top:880px;padding:14px 24px;font-size:34px}
+.long #postit .lbl{font-size:30px;display:inline;margin-right:12px}
+.long #overlay{padding:0 160px}
+.long .kin{font-size:150px}
+.long .sub{font-size:46px}
+</style></head>
+<body>
+<div id="stage">
+  <div id="bg"></div><div id="dots"></div><div id="bignum"></div>
+  <div id="quiz" class="layer">
+    <div id="diff"></div><div id="pct"></div><div id="qnum" class="mono"></div><div id="tally"></div>
+    <div id="qcard" class="card"><div class="tape"></div><div id="qtext"></div></div>
+    <div id="answers"></div><div id="timer"></div><div id="postit"></div><div id="doodle"></div>
+  </div>
+  <div id="overlay" class="layer"></div>
+</div>
+<svg width="0" height="0" style="position:absolute"><filter id="boil"><feTurbulence id="boilT" type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter></svg>
+<svg id="grain" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="3"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div id="wipe"></div>
+<script src="doodles.js"></script>
+<script>
+// Couleur de fond par difficulté : la vidéo « chauffe » au fil des questions
+const PAL={1:{bg:'#b8f36b',fg:'#111',dot:'#111'},2:{bg:'#ffd83d',fg:'#111',dot:'#111'},3:{bg:'#ff8a3d',fg:'#111',dot:'#111'},
+  4:{bg:'#ff4d6d',fg:'#111',dot:'#111'},5:{bg:'#141414',fg:'#c6ff3d',dot:'#c6ff3d'}};
+const DLAB={1:'Facile',2:'Moyen',3:'Difficile',4:'Expert',5:'Impossible'};
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const back=x=>{x=clamp(x);const c=1.9;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+let TL=[],EV=[],FMT,QS,QUIZ,P;
+const $=id=>document.getElementById(id);
+// Rotations « à la main », stables d'un rendu à l'autre
+const jit=(i,k=0)=>Math.sin(i*12.9898+k*78.233)*43758.5453%1;
+// Ordre des réponses figé : la bonne réponse tourne sur A/B/C/D selon le numéro
+function choices(q){if(q.type==='vrai-faux'){const out=['Vrai','Faux'];return{out,pos:Math.max(0,out.indexOf(q.bonne_reponse))}}
+  const pos=(q.numero*7+3)%4,d=[...q.distracteurs],out=[];for(let i=0;i<4;i++)out.push(i===pos?q.bonne_reponse:d.shift());return{out,pos}}
+const CIRCLE='M8,52 C6,18 60,4 52,4 C140,-2 280,2 380,10 C470,16 500,40 494,62 C488,92 380,104 250,102 C120,100 10,96 6,60 C4,40 30,22 70,16';
+
+function build(quiz,fmt){
+  QUIZ=quiz;FMT=fmt;document.body.className=fmt;
+  const pv=quiz.parametres_video||{};
+  const nq=quiz.questions.length;
+  QS=fmt==='long'?quiz.questions:(nq===10?[0,3,5,7,9]:[0,1,2,3,4].map(k=>Math.round(k*(nq-1)/4))).map(i=>quiz.questions[i]);
+  P=fmt==='long'?{timer:pv.duree_timer_s||12,reveal:pv.duree_reponse_s||5}:{timer:8,reveal:3.5};
+  let t=0;const push=(scene,dur,data={})=>{TL.push({scene,start:t,dur,...data});t+=dur};
+  const ev=(at,type)=>EV.push({at,type});
+  if(fmt==='long'){push('hook',4.5);push('rules',3.5)}else push('hook',2.6);
+  QS.forEach((q,i)=>{
+    const s=t;push('timer',P.timer,{i});
+    ev(s,'slam');q.enonce.split(' ').forEach((w,k)=>ev(s+0.25+k*0.07,'tick-soft'));
+    for(let k=0;k<4;k++)ev(s+0.55+k*0.1+0.18,'pop');
+    for(let k=P.timer-3;k<P.timer;k+=1)ev(s+k,'tick-hot');ev(s+0.7,'draw');
+    const r=t;push('reveal',P.reveal,{i});
+    ev(r,'buzz');ev(r+0.72,'stamp');ev(r+0.1,'sparkle');ev(r+0.05,'scribble');ev(r+0.75,'pop');ev(r+P.reveal-0.35,'whoosh');
+    if(fmt==='long'&&i===4){ev(t,'slam');push('relance',3,{i})}
+  });
+  if(fmt==='long'){ev(t,'slam');push('score',6);push('end',8)}else{ev(t,'slam');push('cta',3)}
+  TL.filter(s=>['hook','rules','cta','score','end','relance'].includes(s.scene)).forEach(s=>ev(s.start+0.05,'slam'));
+  window.DURATION=t;window.EVENTS=EV;
+  QS.forEach(()=>$('tally').appendChild(document.createElement('i')));
+}
+
+// Dessin au trait qui se trace, puis « bouillonne » comme une animation dessinée à la main
+function doodleSVG(id,p,t,acc){
+  // id d'un dessin de la bibliothèque, ou dessin propre à la question : {traits:[[d, remplissage, épaisseur], ...]}
+  const parts=(id&&id.traits)||DOODLES[id]||DOODLES.etoile,N=parts.length;
+  const col=f=>f==='acc'?acc:f==='ink'?'var(--ink)':f==='paper'?'var(--paper)':'none';const filled=f=>f&&f!=='accline';
+  let back='',front='';
+  parts.forEach(([d,f,w],k)=>{
+    const pk=clamp(p*N*0.7-k*0.55);const fill=clamp((p-0.55)/0.35);
+    back+=`<path d="${d}" fill="${filled(f)?'var(--paper)':'none'}" stroke="var(--paper)" stroke-width="${(w||7)+22}" stroke-linecap="round" stroke-linejoin="round" opacity="${clamp(p*3)}"/>`;
+    front+=`<path d="${d}" pathLength="1" fill="${col(f)}" fill-opacity="${filled(f)?fill:0}" stroke="${f==='accline'?acc:'var(--ink)'}" stroke-width="${w||7}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="${1-pk}" opacity="${pk>0.01?1:0}"/>`;
+  });
+  return `<svg viewBox="-20 -20 240 240"><g filter="url(#boil)"><g transform="translate(6 8)" opacity=".9">${back.replace(/var\(--paper\)/g,'var(--ink)')}</g>${back}${front}</g></svg>`;
+}
+function boil(t){document.getElementById('boilT').setAttribute('seed',1+Math.floor(t*8)%6)}
+// Part estimée des fans qui trouvent : estimation du générateur, sinon le milieu du palier du barème
+const PART={1:90,2:80,3:50,4:20,5:4};
+const partDe=q=>Math.round(q.part_estimee||PART[q.difficulte]||50);
+function setPal(d){const p=PAL[d];const r=document.documentElement.style;r.setProperty('--bg',p.bg);r.setProperty('--fg',p.fg);r.setProperty('--dot',p.dot)}
+
+function qview(i,local,dur,reveal,t){
+  const q=QS[i],{out,pos}=choices(q);
+  $('quiz').style.opacity=1;setPal(q.difficulte);
+  // gros numéro en fond qui claque
+  const bn=$('bignum');bn.textContent=String(i+1).padStart(2,'0');
+  const s0=reveal?1:back(local/0.35);bn.style.transform=`rotate(${(1-s0)*-25+jit(i)*6-3}deg) scale(${0.4+0.6*s0})`;
+  const d=$('diff');d.textContent=DLAB[q.difficulte];
+  const pc=partDe(q),pe=$('pct');pe.textContent=`≈ ${pc} % trouvent`;if(FMT==='short')pe.style.left=(d.offsetLeft+d.offsetWidth+28)+'px';
+  const pin=reveal?1:back((local-0.5)/0.3);pe.style.opacity=clamp(pin*3);pe.style.transform=`rotate(-3deg) scale(${0.6+0.4*pin})`;
+  $('qnum').textContent=`Q${String(i+1).padStart(2,'0')}/${String(QS.length).padStart(2,'0')}`;
+  [...$('tally').children].forEach((el,k)=>el.className=k<i||(k===i&&reveal)?'on':'');
+  // carte question : arrive en tombant, mots qui poppent un par un
+  const card=$('qcard'),rot=(jit(i,1)*3-1.5).toFixed(2);
+  const cIn=reveal?1:back((local-0.05)/0.35);
+  card.style.transform=`translateY(${(1-cIn)*-160}px) rotate(${rot}deg)`;card.style.opacity=clamp(cIn*3);
+  const qt=$('qtext');
+  if(qt.dataset.q!=i){qt.innerHTML=q.enonce.split(' ').map(w=>`<span>${w}</span>`).join('');qt.dataset.q=i}
+  [...qt.children].forEach((sp,k)=>{const e=reveal?1:back((local-0.25-k*0.07)/0.22);sp.style.opacity=clamp(e*2);sp.style.transform=`translateY(${(1-e)*24}px) scale(${0.6+0.4*e})`});
+  // réponses : stickers qui tombent avec un petit angle
+  const A=$('answers');
+  if(A.dataset.q!=i){A.classList.toggle('vf',out.length===2);A.innerHTML=out.map((a,k)=>`<div class="ans"><b>${'ABCD'[k]}</b><span class="t">${a}</span>${k===pos?`<div class="brag"><i>T'as bon ?</i><span class="big">${pc<60?`TOP ${pc} %`:`COMME ${pc} %`}</span></div>`:''}<div class="strike"></div><svg viewBox="0 0 500 106" preserveAspectRatio="none"><path pathLength="1" d="${CIRCLE}"/></svg></div>`).join('');A.dataset.q=i}
+  [...A.children].forEach((c,k)=>{
+    const e=back((local-0.55-k*0.1)/0.32);const r=(jit(i,k+2)*2.4-1.2);
+    const strike=c.querySelector('.strike'),path=c.querySelector('path');
+    if(!reveal){c.style.opacity=clamp(e*3);c.style.transform=`translateY(${(1-e)*90}px) rotate(${r*(2-e)}deg) scale(${0.85+0.15*e})`;strike.style.transform='scaleX(0)';path.style.strokeDasharray=1;path.style.strokeDashoffset=1;path.style.opacity=0;c.classList.remove('off');const bg0=c.querySelector('.brag');if(bg0)bg0.style.opacity=0;return}
+    if(k===pos){const p=1+0.06*Math.sin(clamp((local-0.4)/0.3)*Math.PI);c.style.transform=`rotate(${r}deg) scale(${p})`;c.style.opacity=1;
+      const po=ease((local-0.05)/0.42);path.style.strokeDasharray=1;path.style.strokeDashoffset=1-po;path.style.opacity=po>0.01?1:0;c.classList.remove('off');strike.style.transform='scaleX(0)';c.style.zIndex=2;
+      const bg=c.querySelector('.brag'),bs=clamp((local-0.55)/0.18);bg.style.opacity=bs>0?1:0;bg.style.transform=`translateY(-50%) rotate(${-7+jit(i,5)*4}deg) scale(${2.2-1.2*ease(bs)})`}
+    else{const s=ease((local-0.05-k*0.06)/0.25);strike.style.transform=`scaleX(${s}) rotate(${-2+k}deg)`;c.style.opacity=1;c.classList.toggle('off',s>0.3);c.style.transform=`rotate(${r}deg)`;c.style.zIndex=1;path.style.opacity=0}
+  });
+  // minuteur
+  const T=$('timer'),rem=Math.max(0,dur-local),hot=!reveal&&rem<=3;
+  const st=$('stage');st.style.transform=hot?`translate(${Math.sin(t*90)*4}px,${Math.cos(t*77)*3}px)`:'';
+  if(!reveal){
+    const tin=ease((local-0.9)/0.3);T.style.opacity=tin;
+    if(FMT==='short'){
+      T.innerHTML=`<div class="ruler"><div class="fill" style="width:${(1-rem/dur)*100}%"></div><div class="ticks"></div><div class="n" style="${hot?'':'color:var(--ink);'}">${Math.ceil(rem)}</div></div>`;
+      T.style.transform=`translateY(${(1-tin)*40}px)`;
+    }else{
+      const ang=(1-rem/dur)*360;const sc=hot?1+0.07*Math.abs(Math.sin(local*Math.PI)):1;
+      T.innerHTML=`<div class="stamp" style="transform:rotate(-6deg) scale(${sc})"><div style="position:absolute;inset:0;background:conic-gradient(var(--ink) ${ang}deg,transparent 0)"></div><div style="position:relative;width:62%;height:62%;border-radius:50%;background:var(--paper);border:6px solid var(--ink);display:grid;place-items:center;font-size:110px;color:${hot?'var(--red)':'var(--ink)'}">${Math.ceil(rem)}</div></div>`;
+    }
+    $('postit').style.opacity=0;
+  }else{
+    T.style.opacity=0;const pi=$('postit');
+    if(pi.dataset.q!=i){pi.innerHTML=`<span class="lbl">Le savais-tu ?</span>${q.anecdote||''}`;pi.dataset.q=i}
+    const e=back((local-0.7)/0.35);pi.style.opacity=clamp(e*3);pi.style.transform=`rotate(${-2+jit(i,9)*3}deg) scale(${0.7+0.3*e})`;
+  }
+  // micro-illustration liée à la question
+  const dd=$('doodle'),did=(q.media&&q.media.doodle)||'etoile',acc=(PACKS[(QUIZ.parametres_video||{}).habillage]||PACKS.defaut).acc;
+  const dp=reveal?1:clamp((local-0.7)/1.1);
+  const hop=reveal?Math.max(0,Math.sin(clamp(local/0.6)*Math.PI))*-36:0;
+  const sway=Math.sin(t*1.7+i)*3;
+  dd.innerHTML=doodleSVG(did,dp,t,acc);
+  dd.style.transform=`translateY(${hop}px) rotate(${6+sway+(reveal?Math.sin(clamp(local/0.6)*Math.PI*2)*6:0)}deg) scale(${0.85+0.15*back(dp*1.5)})`;
+  dd.style.opacity=clamp(dp*4);
+  // volet de transition vers la couleur suivante
+  const W=$('wipe');
+  if(reveal&&local>dur-0.35&&i+1<QS.length){W.style.background=PAL[QS[i+1].difficulte].bg;W.style.transform=`translateX(${-200+ease((local-(dur-0.35))/0.35)*200}%) skewX(-12deg)`}
+  else if(!reveal&&local<0.35&&i>0){W.style.background=PAL[q.difficulte].bg;W.style.transform=`translateX(${ease(local/0.35)*200}%) skewX(-12deg)`}
+  else W.style.transform='translateX(-200%) skewX(-12deg)';
+}
+
+function kin(words,local,stagger=0.09){return words.map((w,k)=>{const e=back((local-k*stagger)/0.22);return`<span class="${w.startsWith('*')?'hl':''}" style="opacity:${clamp(e*3)};transform:translateY(${(1-e)*60}px) rotate(${(1-e)*-8}deg) scale(${0.5+0.5*e})">${w.replace('*','')}</span>`}).join(' ')}
+
+function overlay(html,local,dur){
+  $('quiz').style.opacity=0;const o=$('overlay');o.innerHTML=html;
+  o.style.opacity=clamp((dur-local)/0.2);$('bignum').textContent='';$('stage').style.transform='';$('wipe').style.transform='translateX(-200%) skewX(-12deg)';
+}
+
+window.renderAt=function(t){
+  boil(t);
+  const seg=TL.find(s=>t>=s.start&&t<s.start+s.dur)||TL[TL.length-1];
+  const local=t-seg.start;
+  if(seg.scene==='timer'||seg.scene==='reveal'){$('overlay').style.opacity=0;return qview(seg.i,local,seg.dur,seg.scene==='reveal',t)}
+  const n=QS.length,sub=QUIZ.theme.sujet.toUpperCase().split(' ');
+  // « fan de » + sujet avec la contraction française : du Seigneur, des Simpson, d'Avatar, de la / de Harry
+  const deSujet=()=>{const s=QUIZ.theme.sujet,w=s.split(' ');
+    if(/^le$/i.test(w[0]))return['du',...w.slice(1).map(x=>'*'+x.toUpperCase())];
+    if(/^les$/i.test(w[0]))return['des',...w.slice(1).map(x=>'*'+x.toUpperCase())];
+    if(/^[aeiouyàâéèêëîïôûü]/i.test(s))return["*D'"+sub[0],...sub.slice(1).map(x=>'*'+x)];
+    return['de',...sub.map(x=>'*'+x)]};
+  const subIn=e=>`style="opacity:${clamp(e*3)};transform:rotate(-1.5deg) translateY(${(1-e)*40}px)"`;
+  let html='';
+  const pack=PACKS[(QUIZ.parametres_video||{}).habillage]||PACKS.defaut;
+  // Accroche selon la catégorie : « vrai fan » pour la pop culture, « ton cerveau vs » pour le reste
+  const pop=['film','serie','musique','jeu-video','anime','mix-pop-culture'].includes(QUIZ.theme.categorie);
+  if(seg.scene==='hook'){setPal(FMT==='long'?1:2);
+    html=FMT==='short'
+      ?`<div class="kin">${kin(pop?['T\'es','un','vrai','fan',...deSujet(),'?']:['Ton','cerveau','vs',...sub.map(w=>'*'+w)],local)}</div><div class="sub" ${subIn(back((local-1.0)/0.3))}>${n} questions. Du facile à <span class="marker">l'impossible.</span></div>`
+      :`<div class="kin">${kin([String(n),'questions','sur',...sub.map(w=>'*'+w)],local)}</div><div class="sub" ${subIn(back((local-1.0)/0.3))}>Du facile à <span class="marker">l'impossible.</span> ${pop?'Seuls les vrais fans font':'Seuls 5 % font'} ${n}/${n}.</div>`}
+  if(seg.scene==='rules'){setPal(1);html=`<div class="kin" style="font-size:110px">${kin(['Compte','tes','*points.'],local)}</div><div class="sub" ${subIn(back((local-0.5)/0.3))}>${P.timer} secondes par question. Pas de triche, pas de pause.</div>`}
+  if(seg.scene==='relance'){setPal(3);html=`<div class="kin" style="font-size:120px">${kin(['Mi-temps.','T\'en','es','à','*combien','?'],local)}</div><div class="sub" ${subIn(back((local-0.7)/0.3))}>Écris ton score en commentaire.</div>`}
+  if(seg.scene==='score'){setPal(5);
+    const r=[[0,Math.round(n*.3)],[Math.round(n*.3)+1,Math.round(n*.6)],[Math.round(n*.6)+1,n-1],[n,n]];
+    const rows=r.map(([a,b],k)=>{const e=back((local-0.6-k*0.18)/0.3);return `<div class="tier" style="opacity:${clamp(e*3)};transform:translateX(${(1-e)*-80}px) rotate(${[-1.5,1,-0.5,1.5][k]}deg)"><em>${a===b?a:a+'-'+b}</em>${pack.paliers[k]}</div>`}).join('');
+    html=`<div style="display:flex;gap:80px;align-items:center"><div class="kin" style="color:#c6ff3d">${kin(['Ton','*score','?'],local)}</div><div class="tiers">${rows}</div></div>`}
+  else if(seg.scene==='cta'){setPal(5);document.documentElement.style.setProperty('--bg','#141414');
+    html=`<div class="kin" style="color:#c6ff3d">${kin(['Ton','*score','?'],local)}</div><div class="sub" ${subIn(back((local-0.5)/0.3))}>Dis-le en commentaire. On verra qui ment.</div>`}
+  if(seg.scene==='end'){setPal(2);html=`<div class="kin" style="font-size:120px">${kin(['Prochain','*quiz','→'],local)}</div><div class="sub" ${subIn(back((local-0.5)/0.3))}>Abonne-toi, on monte encore d'un niveau.</div>`}
+  const mot={hook:pack.motifs[0],rules:pack.motifs[1],relance:pack.motifs[2]||pack.motifs[0],cta:pack.motifs[0],score:null,end:pack.motifs[1]}[seg.scene];
+  if(mot)html+=`<div class="hookdood" style="transform:rotate(${8+Math.sin(t*1.7)*3}deg)">${doodleSVG(mot,clamp((local-0.4)/0.9),t,pack.acc)}</div>`;
+  overlay(html,local,seg.dur);
+};
+</script></body></html>

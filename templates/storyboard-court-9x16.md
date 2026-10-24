@@ -1,15 +1,15 @@
 # Storyboard : format court (Shorts, TikTok, Reels 9:16)
 
 Source : le même fichier quiz que le long. Un quiz de 10 questions donne en général 2 courts (questions 1 à 5 et 6 à 10) ou 1 court « que les questions dures ».
-Rendu : 1080×1920, 30 i/s, durée cible 30 à 50 s (toujours sous 60 s).
+Rendu : 1080×1920, 30 i/s, durée cible 45 à 75 s. Shorts accepte jusqu'à 3 min, TikTok et Reels aussi : on ne sacrifie plus le temps de réflexion pour passer sous 60 s.
 
 ## Durées
 
 | Variante | Questions | Timer | Révélation | Durée |
 |---|---|---|---|---|
-| Rapide | 5 | 4 s | 2 s | ≈ 35 s |
-| Escalade | 3 (facile, difficile, impossible) | 5 s | 2,5 s | ≈ 25 s |
-| Défi unique | 1 question « impossible » | 6 s | 3 s | ≈ 12 s, pensé pour la boucle |
+| Standard | 5 | 8 s | 3,5 s | ≈ 65 s |
+| Escalade | 3 (facile, difficile, impossible) | 8 s | 3,5 s | ≈ 40 s |
+| Défi unique | 1 question « impossible » | 10 s | 4 s | ≈ 17 s, pensé pour la boucle |
 
 ## Séquence
 

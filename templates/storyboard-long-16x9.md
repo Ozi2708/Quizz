@@ -7,11 +7,11 @@ Rendu : 1920×1080, 30 i/s, sans voix off en V1 (musique + bruitages + texte).
 
 | Variante | Questions | Durée cible | Usage |
 |---|---|---|---|
-| Classique | 10 | 2 min 30 à 3 min | Tests rapides de thèmes |
+| Classique | 10 | ≈ 3 min 15 | Tests rapides de thèmes |
 | Standard | 20 à 25 | 5 à 7 min | Format principal |
 | Monétisable | 30+ (3 manches de 10) | 8 min et plus | Ouvre les pubs en milieu de vidéo sur YouTube |
 
-Durée d'une question = annonce 1 s + timer `duree_timer_s` (8 s par défaut) + révélation `duree_reponse_s` (4 s) + transition 0,5 s ≈ 13,5 s.
+Durée d'une question = timer `duree_timer_s` (12 s par défaut) + révélation `duree_reponse_s` (5 s) ≈ 17 s.
 
 ## Séquence
 
