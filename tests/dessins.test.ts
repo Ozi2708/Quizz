@@ -54,6 +54,7 @@ test("le générateur range chaque dessin au format du schéma", () => {
     enonce,
     bonne_reponse: "Vrai",
     distracteurs: ["Faux"],
+    fans_qui_trouvent: 95,
     anecdote: "",
     visuel_prompt: "",
     dessin,

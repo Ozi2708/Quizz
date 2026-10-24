@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { fautesDifficulte } from "../src/pipeline/generer.ts";
 import { lireQuiz } from "../src/pipeline/schema.ts";
 import { melangerChoix } from "../src/pipeline/melange.ts";
 import { estBloque, porte1 } from "../src/pipeline/porte1.ts";
@@ -85,4 +86,18 @@ test("une simple remarque du vérificateur ne conteste pas la question", () => {
   ]);
   assert.equal(resultat.questions[0].fact_check.statut, "verifie");
   assert.match(resultat.questions[0].fact_check.note ?? "", /remarque/);
+});
+
+test("la difficulté générée doit tenir le barème et monter à parts égales", () => {
+  const parts = [98, 95, 85, 75, 60, 45, 30, 15, 4, 2];
+  const quiz = parts.map((fans_qui_trouvent, i) => ({ difficulte: Math.floor(i / 2) + 1, fans_qui_trouvent }));
+  assert.deepEqual(fautesDifficulte(quiz), []);
+
+  quiz[4].fans_qui_trouvent = 85;
+  quiz[8].difficulte = 4;
+  assert.deepEqual(fautesDifficulte(quiz), [
+    "Q5 (Difficile) : 85 % des fans trouvent, il en faut de 35 à 70 % : change la question ou son niveau",
+    "Q9 (Expert) : 4 % des fans trouvent, il en faut de 5 à 35 % : change la question ou son niveau",
+    "Questions par niveau, de Facile à Impossible : 2/2/2/3/1 au lieu de 2 chacun",
+  ]);
 });
