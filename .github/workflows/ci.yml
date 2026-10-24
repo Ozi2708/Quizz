@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - name: Schéma et porte 1 sur les quiz du dépôt
+        run: |
+          for f in templates/exemples/*.json quizzes/*.json; do
+            [ -e "$f" ] || continue
+            echo "== $f"
+            npm run -s qa -- "$f" --brouillon
+          done

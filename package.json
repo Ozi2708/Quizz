@@ -1,0 +1,39 @@
+{
+  "name": "les-quizz",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pipeline automatisé de quiz vidéo : génération, vérification, rendu, QA, publication.",
+  "scripts": {
+    "valider": "tsx src/pipeline/cli.ts valider",
+    "qa": "tsx src/pipeline/cli.ts qa",
+    "generer": "tsx src/pipeline/cli.ts generer",
+    "verifier": "tsx src/pipeline/cli.ts verifier",
+    "rendu": "tsx src/pipeline/cli.ts rendu",
+    "studio": "remotion studio src/video/index.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "@remotion/bundler": "4.0.538",
+    "@remotion/cli": "4.0.538",
+    "@remotion/renderer": "4.0.538",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "4.0.538",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "id": "harry-potter-10q-001",
+  "version_schema": "1.0",
+  "langue": "fr",
+  "theme": {
+    "categorie": "film",
+    "sujet": "Harry Potter",
+    "sous_sujet": "Livres et films (version française)",
+    "tags": ["harry potter", "poudlard", "sorcier", "quiz"]
+  },
+  "titre": "10 questions sur Harry Potter, de facile à impossible",
+  "format_cible": ["long-16x9", "court-9x16"],
+  "statut": "brouillon",
+  "parametres_video": {
+    "duree_timer_s": 8,
+    "duree_reponse_s": 4,
+    "ordre_reponses": "aleatoire-fixe",
+    "habillage": "grimoire-sombre",
+    "musique": "mystere-orchestral-01",
+    "voix_off": false
+  },
+  "questions": [
+    {
+      "numero": 1,
+      "difficulte": 1,
+      "libelle_difficulte": "Facile",
+      "type": "qcm-4",
+      "enonce": "Comment s'appelle l'école de sorcellerie de Harry ?",
+      "bonne_reponse": "Poudlard",
+      "distracteurs": ["Beauxbâtons", "Durmstrang", "Ilvermorny"],
+      "anecdote": "Les trois autres sont aussi de vraies écoles de magie de l'univers.",
+      "media": { "visuel_prompt": "château gothique illuminé au bord d'un lac la nuit, style peinture fantastique" },
+      "sources": [
+        { "reference": "Harry Potter à l'école des sorciers (tome 1)" },
+        { "reference": "Wikipédia FR, Poudlard", "url": "https://fr.wikipedia.org/wiki/Poudlard" }
+      ],
+      "fact_check": { "statut": "a-verifier" }
+    },
+    {
+      "numero": 2,
+      "difficulte": 1,
+      "libelle_difficulte": "Facile",
+      "type": "qcm-4",
+      "enonce": "Quel animal est Hedwige ?",
+      "bonne_reponse": "Une chouette",
+      "distracteurs": ["Un corbeau", "Un chat", "Un crapaud"],
+      "anecdote": "C'est une chouette harfang, offerte par Hagrid pour les 11 ans de Harry.",
+      "media": { "visuel_prompt": "chouette blanche aux yeux dorés posée sur une malle ancienne" },
+      "sources": [{ "reference": "Harry Potter à l'école des sorciers (tome 1)" }],
+      "fact_check": { "statut": "a-verifier" }
+    },
+    {
+      "numero": 3,
+      "difficulte": 2,
+      "libelle_difficulte": "Moyen",
+      "type": "qcm-4",
+      "enonce": "Quel sortilège sert à désarmer un adversaire ?",
+      "bonne_reponse": "Expelliarmus",
+      "distracteurs": ["Stupéfix", "Lumos", "Wingardium Leviosa"],
+      "anecdote": "C'est le sort signature de Harry, jusqu'au duel final.",
+      "media": { "visuel_prompt": "baguette magique projetant un éclair rouge, fond sombre" },
+      "sources": [{ "reference": "Harry Potter et la Chambre des secrets (tome 2)" }],
+      "fact_check": { "statut": "a-verifier" }
+    },
+    {
+      "numero": 4,
+      "difficulte": 2,
+      "libelle_difficulte": "Moyen",
+      "type": "qcm-4",
+      "enonce": "Quelle forme prend le Patronus de Harry ?",
+      "bonne_reponse": "Un cerf",
+      "distracteurs": ["Une biche", "Un loup", "Un phénix"],
+      "anecdote": "Comme l'Animagus de son père, James. La biche est celle de Rogue et de Lily.",
+      "media": { "visuel_prompt": "cerf argenté lumineux et translucide dans une forêt de nuit" },
+      "sources": [{ "reference": "Harry Potter et le Prisonnier d'Azkaban (tome 3)" }],
+      "fact_check": { "statut": "a-verifier" }
+    },
+    {
+      "numero": 5,
+      "difficulte": 3,
+      "libelle_difficulte": "Difficile",
+      "type": "qcm-4",
+      "enonce": "En quel bois est faite la baguette de Harry ?",
+      "bonne_reponse": "Houx",
+      "distracteurs": ["If", "Sureau", "Chêne"],
+      "anecdote": "Houx et plume de phénix. Celle de Voldemort est en if, avec une plume du même phénix.",
+      "media": { "visuel_prompt": "boutique de baguettes poussiéreuse, boîtes empilées jusqu'au plafond" },
+      "sources": [{ "reference": "Harry Potter à l'école des sorciers (tome 1), chez Ollivander" }],
+      "fact_check": { "statut": "a-verifier" }
+    },
+    {
+      "numero": 6,
+      "difficulte": 3,
+      "libelle_difficulte": "Difficile",
+      "type": "qcm-4",
+      "enonce": "Quel est le vrai nom de Voldemort en VF ?",
+      "bonne_reponse": "Tom Elvis Jedusor",
+      "distracteurs": ["Tom Marvolo Jedusor", "Tom Elvis Gaunt", "Tom Salazar Jedusor"],
+      "anecdote": "Anagramme de « Je suis Voldemort ». En VO : Tom Marvolo Riddle.",
+      "media": { "visuel_prompt": "journal intime en cuir noir ouvert, lettres qui flottent au-dessus des pages" },
+      "sources": [{ "reference": "Harry Potter et la Chambre des secrets (tome 2)" }],
+      "fact_check": { "statut": "a-verifier", "note": "Différence VF/VO : Marvolo est un distracteur piège, à garder uniquement pour un public FR." }
+    },
+    {
+      "numero": 7,
+      "difficulte": 4,
+      "libelle_difficulte": "Expert",
+      "type": "qcm-4",
+      "enonce": "Comment s'appelle l'elfe de maison de la famille Black ?",
+      "bonne_reponse": "Kreattur",
+      "distracteurs": ["Dobby", "Winky", "Hokey"],
+      "anecdote": "Dobby servait les Malefoy, Winky les Croupton et Hokey Hepzibah Smith.",
+      "media": { "visuel_prompt": "vieux manoir sombre et poussiéreux, portraits aux murs, lumière de bougie" },
+      "sources": [{ "reference": "Harry Potter et l'Ordre du Phénix (tome 5)" }],
+      "fact_check": { "statut": "a-verifier" }
+    },
+    {
+      "numero": 8,
+      "difficulte": 4,
+      "libelle_difficulte": "Expert",
+      "type": "qcm-4",
+      "enonce": "Quel est le deuxième prénom d'Albus Dumbledore ?",
+      "bonne_reponse": "Perceval",
+      "distracteurs": ["Aberforth", "Gellert", "Ignotus"],
+      "anecdote": "Son nom complet : Albus Perceval Wulfric Brian Dumbledore.",
+      "media": { "visuel_prompt": "bureau circulaire rempli d'instruments argentés et d'un perchoir de phénix" },
+      "sources": [{ "reference": "Wikipédia FR, Albus Dumbledore", "url": "https://fr.wikipedia.org/wiki/Albus_Dumbledore" }],
+      "fact_check": { "statut": "a-verifier", "note": "Vérifier l'orthographe VF (Perceval vs Percival)." }
+    },
+    {
+      "numero": 9,
+      "difficulte": 5,
+      "libelle_difficulte": "Impossible",
+      "type": "qcm-4",
+      "enonce": "Quel est le prénom de la mère de Voldemort ?",
+      "bonne_reponse": "Mérope",
+      "distracteurs": ["Ariana", "Eileen", "Hepzibah"],
+      "anecdote": "Mérope Gaunt, descendante de Serpentard. Eileen est la mère de Rogue.",
+      "media": { "visuel_prompt": "masure délabrée au fond des bois, serpent cloué à la porte" },
+      "sources": [{ "reference": "Harry Potter et le Prince de sang-mêlé (tome 6)" }],
+      "fact_check": { "statut": "a-verifier" }
+    },
+    {
+      "numero": 10,
+      "difficulte": 5,
+      "libelle_difficulte": "Impossible",
+      "type": "qcm-4",
+      "enonce": "Quel est le patronyme de naissance de Mrs Weasley ?",
+      "bonne_reponse": "Prewett",
+      "distracteurs": ["Londubat", "Abbot", "Diggory"],
+      "anecdote": "Ses frères Fabian et Gideon Prewett faisaient partie du premier Ordre du Phénix.",
+      "media": { "visuel_prompt": "maison biscornue de travers dans la campagne anglaise, horloge magique" },
+      "sources": [{ "reference": "Harry Potter et l'Ordre du Phénix (tome 5) et Les Reliques de la Mort (tome 7)" }],
+      "fact_check": { "statut": "a-verifier" }
+    }
+  ],
+  "metadonnees_publication": {
+    "titre_youtube": "10 questions sur HARRY POTTER, de facile à IMPOSSIBLE 🧙 (seuls les vrais fans ont 10/10)",
+    "titre_court": "Seuls les vrais fans de Harry Potter ont 5/5 🧙",
+    "description": "Teste tes connaissances sur Harry Potter avec 10 questions classées de facile à impossible. Note ton score à chaque question et dis-nous en commentaire jusqu'où tu es allé !\n\nQuiz non officiel, réalisé par des fans. Harry Potter est une marque de Warner Bros. et de J.K. Rowling.",
+    "hashtags": ["#harrypotter", "#quiz", "#poudlard", "#quizcinema"],
+    "texte_miniature": "10/10 = VRAI FAN ?",
+    "question_commentaire": "Ton score sur 10 en commentaire 👇"
+  }
+}
