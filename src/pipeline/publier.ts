@@ -184,13 +184,15 @@ export async function publier(
     headers: { "Idempotency-Key": id },
     body: formulaire,
   });
-  if (envoi.job_id) return { id: envoi.job_id, statut: "programme", resultats: [] };
+  if (options.programme && envoi.job_id) return { id: envoi.job_id, statut: "programme", resultats: [] };
 
+  // Upload-Post peut aussi mettre un envoi immédiat en file d'attente avec un job_id : on le suit pareil.
+  const suivi = envoi.job_id ? `job_id=${encodeURIComponent(envoi.job_id)}` : `request_id=${encodeURIComponent(id)}`;
   const limite = Date.now() + delaiMaxMs;
   for (;;) {
     let etat: ReponseStatut = {};
     try {
-      etat = await appeler<ReponseStatut>(`${API}/uploadposts/status?request_id=${encodeURIComponent(id)}`, cle);
+      etat = await appeler<ReponseStatut>(`${API}/uploadposts/status?${suivi}`, cle);
     } catch (erreur) {
       // Juste après l'envoi, le suivi peut ne pas encore connaître l'identifiant.
       if (!(erreur instanceof ErreurUploadPost && erreur.code === 404)) throw erreur;
