@@ -20,6 +20,9 @@ on:
   push:
     branches: ["essai/**"]
 
+permissions:
+  contents: write
+
 jobs:
   generer:
     runs-on: ubuntu-latest
@@ -54,3 +57,11 @@ jobs:
           path: |
             quizzes/*.json
             *.log
+      # Essai seulement : le quiz est gardé sur la branche, les artefacts n'étant pas lisibles depuis la session Claude.
+      - name: Garder le quiz sur la branche d'essai
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f quizzes/*.json
+          git commit -m "Essai : quiz généré" && git push
