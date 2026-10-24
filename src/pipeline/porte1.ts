@@ -1,3 +1,4 @@
+import { IDS_DESSINS } from "./dessins.ts";
 import { validerSchema } from "./schema.ts";
 import { melangerChoix } from "./melange.ts";
 import { LIBELLES, type Quiz } from "./types.ts";
@@ -28,6 +29,9 @@ export function normaliser(texte: string): string {
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
 }
+
+// Commandes de chemin SVG et nombres : de quoi écarter un texte glissé à la place d'un tracé.
+const CHEMIN_SVG = /^\s*[Mm][\sMmLlHhVvCcSsQqTtAaZz\d.,eE+-]*$/;
 
 export function porte1(quiz: Quiz, options: OptionsPorte1 = {}): Controle[] {
   const { enoncesPublies = [], exigerFactCheck = true } = options;
@@ -92,6 +96,48 @@ export function porte1(quiz: Quiz, options: OptionsPorte1 = {}): Controle[] {
       const faute = publies.has(n) ? [`Q${q.numero} déjà publiée`] : vus.has(n) ? [`Q${q.numero} en double`] : [];
       vus.add(n);
       return faute;
+    }),
+  );
+
+  // Dessins : templates/dessins-guide.md. Le lien avec l'énoncé et l'absence de spoiler restent à l'œil,
+  // sauf le cas flagrant d'un dessin de la bibliothèque qui porte le nom de la bonne réponse.
+  ajouter(
+    "Un dessin par question, de la bibliothèque ou propre à la question",
+    true,
+    qs.flatMap((q) => {
+      const dessin = q.media?.doodle;
+      if (dessin === undefined) return [`Q${q.numero} : aucun dessin`];
+      if (typeof dessin === "string") {
+        return IDS_DESSINS.includes(dessin) ? [] : [`Q${q.numero} : « ${dessin} » absent de templates/rendu/doodles.js`];
+      }
+      return dessin.traits.some(([chemin]) => !CHEMIN_SVG.test(chemin)) ? [`Q${q.numero} : chemin SVG illisible`] : [];
+    }),
+  );
+
+  const dessins = new Map<string, number>();
+  ajouter(
+    "Aucun dessin répété dans le quiz",
+    true,
+    qs.flatMap((q) => {
+      const dessin = q.media?.doodle;
+      if (dessin === undefined) return [];
+      const cle = typeof dessin === "string" ? dessin : JSON.stringify(dessin.traits);
+      const premier = dessins.get(cle);
+      if (premier === undefined) dessins.set(cle, q.numero);
+      return premier === undefined ? [] : [`Q${q.numero} reprend le dessin de Q${premier}`];
+    }),
+  );
+
+  // Pluriel ignoré : « boites » pour « Des boîtes », « cerf » pour « Un cerf ».
+  const singulier = (mot: string) => mot.replace(/[sx]$/, "");
+  ajouter(
+    "Le dessin ne porte pas le nom de la bonne réponse",
+    false,
+    qs.flatMap((q) => {
+      const dessin = q.media?.doodle;
+      if (typeof dessin !== "string") return [];
+      const mots = normaliser(q.bonne_reponse).split(" ").map(singulier);
+      return mots.includes(singulier(dessin)) ? [`Q${q.numero} : « ${dessin} » pour « ${q.bonne_reponse} »`] : [];
     }),
   );
 

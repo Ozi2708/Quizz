@@ -52,7 +52,7 @@
         "duree_timer_s": { "type": "number", "minimum": 3, "maximum": 20, "description": "Temps de réflexion par question" },
         "duree_reponse_s": { "type": "number", "minimum": 1.5, "maximum": 10, "description": "Durée d'affichage de la bonne réponse + anecdote" },
         "ordre_reponses": { "type": "string", "enum": ["aleatoire-fixe", "tel-quel"], "default": "aleatoire-fixe" },
-        "habillage": { "type": "string", "description": "Identifiant du thème visuel (palette, police, fond)" },
+        "habillage": { "type": "string", "description": "Pack d'univers (rendu/doodles.js > PACKS) : motifs récurrents et couleur d'accent, ex. sorcellerie" },
         "musique": { "type": "string", "description": "Identifiant de la piste libre de droits" },
         "voix_off": { "type": "boolean", "default": false, "description": "V2 : ElevenLabs" }
       }
@@ -108,7 +108,36 @@
           "additionalProperties": false,
           "properties": {
             "visuel_prompt": { "type": "string", "description": "Prompt pour l'image de fond générée (jamais d'image officielle sous droits)" },
-            "extrait_audio": { "type": "string", "description": "Pour le type son : référence d'un extrait autorisé" }
+            "extrait_audio": { "type": "string", "description": "Pour le type son : référence d'un extrait autorisé" },
+            "doodle": {
+              "description": "Micro-illustration liée à l'énoncé, sans donner la réponse (voir dessins-guide.md) : id de rendu/doodles.js, ou dessin propre à la question.",
+              "oneOf": [
+                { "type": "string", "pattern": "^[a-z0-9]+$" },
+                {
+                  "type": "object",
+                  "required": ["traits"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "traits": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 8,
+                      "items": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 3,
+                        "prefixItems": [
+                          { "type": "string", "minLength": 3, "description": "Chemin SVG dans un carré 0-200" },
+                          { "enum": ["paper", "acc", "ink", "accline", null] },
+                          { "type": "number", "minimum": 2, "maximum": 24 }
+                        ],
+                        "items": false
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         },
         "sources": {

@@ -15,7 +15,7 @@
     "duree_timer_s": 8,
     "duree_reponse_s": 4,
     "ordre_reponses": "aleatoire-fixe",
-    "habillage": "grimoire-sombre",
+    "habillage": "sorcellerie",
     "musique": "mystere-orchestral-01",
     "voix_off": false
   },
@@ -29,7 +29,7 @@
       "bonne_reponse": "Poudlard",
       "distracteurs": ["Beauxbâtons", "Durmstrang", "Ilvermorny"],
       "anecdote": "Les trois autres sont aussi de vraies écoles de magie de l'univers.",
-      "media": { "visuel_prompt": "château gothique illuminé au bord d'un lac la nuit, style peinture fantastique" },
+      "media": { "visuel_prompt": "château gothique illuminé au bord d'un lac la nuit, style peinture fantastique", "doodle": "chateau" },
       "sources": [
         { "reference": "Harry Potter à l'école des sorciers (tome 1)" },
         { "reference": "Wikipédia FR, Poudlard", "url": "https://fr.wikipedia.org/wiki/Poudlard" }
@@ -45,7 +45,7 @@
       "bonne_reponse": "Une chouette",
       "distracteurs": ["Un corbeau", "Un chat", "Un crapaud"],
       "anecdote": "C'est une chouette harfang, offerte par Hagrid pour les 11 ans de Harry.",
-      "media": { "visuel_prompt": "chouette blanche aux yeux dorés posée sur une malle ancienne" },
+      "media": { "visuel_prompt": "chouette blanche aux yeux dorés posée sur une malle ancienne", "doodle": "lettre" },
       "sources": [{ "reference": "Harry Potter à l'école des sorciers (tome 1)" }],
       "fact_check": { "statut": "a-verifier" }
     },
@@ -58,7 +58,7 @@
       "bonne_reponse": "Expelliarmus",
       "distracteurs": ["Stupéfix", "Lumos", "Wingardium Leviosa"],
       "anecdote": "C'est le sort signature de Harry, jusqu'au duel final.",
-      "media": { "visuel_prompt": "baguette magique projetant un éclair rouge, fond sombre" },
+      "media": { "visuel_prompt": "baguette magique projetant un éclair rouge, fond sombre", "doodle": "baguette" },
       "sources": [{ "reference": "Harry Potter et la Chambre des secrets (tome 2)" }],
       "fact_check": { "statut": "a-verifier" }
     },
@@ -71,7 +71,7 @@
       "bonne_reponse": "Un cerf",
       "distracteurs": ["Une biche", "Un loup", "Un phénix"],
       "anecdote": "Comme l'Animagus de son père, James. La biche est celle de Rogue et de Lily.",
-      "media": { "visuel_prompt": "cerf argenté lumineux et translucide dans une forêt de nuit" },
+      "media": { "visuel_prompt": "cerf argenté lumineux et translucide dans une forêt de nuit", "doodle": "brume" },
       "sources": [{ "reference": "Harry Potter et le Prisonnier d'Azkaban (tome 3)" }],
       "fact_check": { "statut": "a-verifier" }
     },
@@ -84,7 +84,7 @@
       "bonne_reponse": "Houx",
       "distracteurs": ["If", "Sureau", "Chêne"],
       "anecdote": "Houx et plume de phénix. Celle de Voldemort est en if, avec une plume du même phénix.",
-      "media": { "visuel_prompt": "boutique de baguettes poussiéreuse, boîtes empilées jusqu'au plafond" },
+      "media": { "visuel_prompt": "boutique de baguettes poussiéreuse, boîtes empilées jusqu'au plafond", "doodle": "boites" },
       "sources": [{ "reference": "Harry Potter à l'école des sorciers (tome 1), chez Ollivander" }],
       "fact_check": { "statut": "a-verifier" }
     },
@@ -97,7 +97,7 @@
       "bonne_reponse": "Tom Elvis Jedusor",
       "distracteurs": ["Tom Marvolo Jedusor", "Tom Elvis Gaunt", "Tom Salazar Jedusor"],
       "anecdote": "Anagramme de « Je suis Voldemort ». En VO : Tom Marvolo Riddle.",
-      "media": { "visuel_prompt": "journal intime en cuir noir ouvert, lettres qui flottent au-dessus des pages" },
+      "media": { "visuel_prompt": "journal intime en cuir noir ouvert, lettres qui flottent au-dessus des pages", "doodle": "livre" },
       "sources": [{ "reference": "Harry Potter et la Chambre des secrets (tome 2)" }],
       "fact_check": { "statut": "a-verifier", "note": "Différence VF/VO : Marvolo est un distracteur piège, à garder uniquement pour un public FR." }
     },
@@ -110,7 +110,7 @@
       "bonne_reponse": "Kreattur",
       "distracteurs": ["Dobby", "Winky", "Hokey"],
       "anecdote": "Dobby servait les Malefoy, Winky les Croupton et Hokey Hepzibah Smith.",
-      "media": { "visuel_prompt": "vieux manoir sombre et poussiéreux, portraits aux murs, lumière de bougie" },
+      "media": { "visuel_prompt": "vieux manoir sombre et poussiéreux, portraits aux murs, lumière de bougie", "doodle": "medaillon" },
       "sources": [{ "reference": "Harry Potter et l'Ordre du Phénix (tome 5)" }],
       "fact_check": { "statut": "a-verifier" }
     },
@@ -123,7 +123,7 @@
       "bonne_reponse": "Perceval",
       "distracteurs": ["Aberforth", "Gellert", "Ignotus"],
       "anecdote": "Son nom complet : Albus Perceval Wulfric Brian Dumbledore.",
-      "media": { "visuel_prompt": "bureau circulaire rempli d'instruments argentés et d'un perchoir de phénix" },
+      "media": { "visuel_prompt": "bureau circulaire rempli d'instruments argentés et d'un perchoir de phénix", "doodle": "lunettes" },
       "sources": [{ "reference": "Wikipédia FR, Albus Dumbledore", "url": "https://fr.wikipedia.org/wiki/Albus_Dumbledore" }],
       "fact_check": { "statut": "a-verifier", "note": "Vérifier l'orthographe VF (Perceval vs Percival)." }
     },
@@ -136,7 +136,7 @@
       "bonne_reponse": "Mérope",
       "distracteurs": ["Ariana", "Eileen", "Hepzibah"],
       "anecdote": "Mérope Gaunt, descendante de Serpentard. Eileen est la mère de Rogue.",
-      "media": { "visuel_prompt": "masure délabrée au fond des bois, serpent cloué à la porte" },
+      "media": { "visuel_prompt": "masure délabrée au fond des bois, serpent cloué à la porte", "doodle": "serpent" },
       "sources": [{ "reference": "Harry Potter et le Prince de sang-mêlé (tome 6)" }],
       "fact_check": { "statut": "a-verifier" }
     },
@@ -149,7 +149,7 @@
       "bonne_reponse": "Prewett",
       "distracteurs": ["Londubat", "Abbot", "Diggory"],
       "anecdote": "Ses frères Fabian et Gideon Prewett faisaient partie du premier Ordre du Phénix.",
-      "media": { "visuel_prompt": "maison biscornue de travers dans la campagne anglaise, horloge magique" },
+      "media": { "visuel_prompt": "maison biscornue de travers dans la campagne anglaise, horloge magique", "doodle": "pull" },
       "sources": [{ "reference": "Harry Potter et l'Ordre du Phénix (tome 5) et Les Reliques de la Mort (tome 7)" }],
       "fact_check": { "statut": "a-verifier" }
     }

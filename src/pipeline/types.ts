@@ -31,6 +31,16 @@ export interface Source {
   url?: string;
 }
 
+// paper : volume blanc, acc : couleur du pack, ink : noir plein, accline : trait de couleur sans remplissage.
+export const REMPLISSAGES = ["paper", "acc", "ink", "accline"] as const;
+export type Remplissage = (typeof REMPLISSAGES)[number];
+
+/** Trait d'un dessin : chemin SVG dans un carré 0-200, remplissage (aucun = trait noir seul), épaisseur (7 par défaut). */
+export type Trait = [chemin: string, remplissage?: Remplissage | null, epaisseur?: number];
+
+/** Id de templates/rendu/doodles.js, ou dessin propre à la question (templates/dessins-guide.md). */
+export type Dessin = string | { traits: Trait[] };
+
 export interface FactCheck {
   statut: "a-verifier" | "verifie" | "conteste";
   nb_sources_concordantes?: number;
@@ -46,7 +56,7 @@ export interface Question {
   bonne_reponse: string;
   distracteurs: string[];
   anecdote?: string;
-  media?: { visuel_prompt?: string; extrait_audio?: string };
+  media?: { visuel_prompt?: string; extrait_audio?: string; doodle?: Dessin };
   sources: Source[];
   fact_check: FactCheck;
 }
@@ -64,6 +74,7 @@ export interface Quiz {
     duree_timer_s?: number;
     duree_reponse_s?: number;
     ordre_reponses?: "aleatoire-fixe" | "tel-quel";
+    /** Pack d'univers de templates/rendu/doodles.js (PACKS). */
     habillage?: string;
     musique?: string;
     voix_off?: boolean;

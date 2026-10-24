@@ -13,6 +13,8 @@ Chaque quiz passe 3 portes. Une vidéo n'est publiée que si toutes les lignes *
 - [ ] Les distracteurs sont de même nature et de longueur comparable à la bonne réponse (la réponse ne doit pas se deviner par sa forme)
 - [ ] Aucun doublon de question avec les quiz déjà publiés sur la chaîne *(auto)*
 - [ ] Orthographe et grammaire françaises correctes, noms propres dans leur forme VF officielle
+- [ ] Chaque question a son dessin, tiré de la bibliothèque ou dessiné pour elle, et aucun n'est répété dans le quiz *(auto)*
+- [ ] Chaque dessin évoque l'énoncé sans donner la réponse (`dessins-guide.md`) *(alerte auto quand un dessin de la bibliothèque porte le nom de la réponse)*
 
 **Recommandé**
 - [ ] Au moins 2 questions qui surprennent même un fan (anecdote « je ne savais pas »)

@@ -3,16 +3,27 @@ import type Anthropic from "@anthropic-ai/sdk";
 import * as z from "zod/v4";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { claude, MODELE, REPLI, verifierArret } from "./claude.ts";
+import { IDS_DESSINS, PACKS } from "./dessins.ts";
+import { porte1 } from "./porte1.ts";
 import { validerSchema } from "./schema.ts";
-import { LIBELLES, type Categorie, type Quiz } from "./types.ts";
+import { LIBELLES, REMPLISSAGES, type Categorie, type Dessin, type Quiz, type Trait } from "./types.ts";
 
 // Étape 2 du pipeline : Claude écrit le contenu, le code ajoute les champs
-// techniques (id, statut, fact_check) puis valide contre le schéma.
+// techniques (id, statut, fact_check) puis contrôle le tout avec la porte 1.
+
+// Dessin de la question : un id de la bibliothèque, ou des traits dessinés pour elle. Les traits
+// sont des objets, et non des tableaux [chemin, remplissage] : les sorties structurées refusent les tuples.
+// L'id reste un texte libre : un id inventé est renvoyé à Claude par la porte 1 au lieu de faire échouer la lecture.
+const DessinGenere = z.object({
+  bibliotheque: z.string().nullable(),
+  traits: z.array(z.object({ chemin: z.string(), remplissage: z.enum(REMPLISSAGES).nullable() })),
+});
 
 const ContenuQuiz = z.object({
   titre: z.string(),
   sous_sujet: z.string(),
   tags: z.array(z.string()),
+  habillage: z.enum(PACKS),
   questions: z.array(
     z.object({
       difficulte: z.number().int(),
@@ -22,6 +33,7 @@ const ContenuQuiz = z.object({
       distracteurs: z.array(z.string()),
       anecdote: z.string(),
       visuel_prompt: z.string(),
+      dessin: DessinGenere,
       sources: z.array(z.object({ reference: z.string(), url: z.string().optional() })),
     }),
   ),
@@ -53,7 +65,17 @@ Règles impératives :
 - Uniquement des faits que tu connais avec certitude, chacun avec au moins une source précise (œuvre, tome, épisode, ou page web). N'invente jamais d'URL : laisse url vide si tu n'es pas sûr.
 - Anecdote : une phrase de 140 caractères au plus, vraie et surprenante.
 - visuel_prompt : description d'une image de fond à générer, sans personnage reconnaissable, logo ni affiche officielle.
-- Métadonnées : titre_youtube accrocheur de 70 caractères au plus, titre_court pour les formats verticaux, description de 2 à 4 phrases qui mentionne que le quiz est non officiel quand le sujet est une œuvre, 3 à 6 hashtags commençant par #, texte_miniature de 3 à 5 mots, question_commentaire qui invite à donner son score.`;
+- Métadonnées : titre_youtube accrocheur de 70 caractères au plus, titre_court pour les formats verticaux, description de 2 à 4 phrases qui mentionne que le quiz est non officiel quand le sujet est une œuvre, 3 à 6 hashtags commençant par #, texte_miniature de 3 à 5 mots, question_commentaire qui invite à donner son score.
+
+Dessin de chaque question (champ dessin), affiché pendant que le spectateur réfléchit :
+- Lis la question, pas la réponse : dessine l'indice que l'énoncé donne déjà. « Quelle capitale est traversée par la Vltava ? » → un pont sur une rivière ; « Quelle est la capitale de l'Espagne ? » → un éventail.
+- Ne donne jamais la réponse : qui ne voit que le dessin ne doit pas pouvoir deviner la bonne réponse parmi les choix. Pas de tour Eiffel sur « Quelle est la capitale de la France ? ».
+- Un seul objet en silhouette simple, reconnaissable en une seconde. Évoque sans copier : jamais de logo, de personnage, d'affiche ni de visuel officiel.
+- Chaque question a son dessin : jamais deux fois le même dans un quiz, jamais un motif passe-partout (étoile, livre, horloge) sans lien avec l'énoncé.
+- bibliotheque : un dessin existant, seulement s'il colle vraiment à l'énoncé, sinon null. La plupart sont propres à un thème : mieux vaut dessiner que forcer un id qui colle mal. Ids : ${IDS_DESSINS.join(", ")}.
+- traits : vide si bibliotheque est rempli, sinon 3 à 7 traits dans un carré de 0 à 200. chemin = chemin SVG (M, L, Q, C, A, Z) ; remplissage = paper (volume blanc), acc (couleur d'accent), ink (noir plein), accline (trait de couleur sans remplissage) ou null (trait noir seul). Formes fermées pour les volumes, traits ouverts pour les détails, une seule touche de couleur et le reste en noir et blanc. Exemple, une tasse fumante : [{"chemin": "M50 90 L150 90 L140 170 L60 170 Z", "remplissage": "paper"}, {"chemin": "M150 105 C180 105 180 145 145 150", "remplissage": null}, {"chemin": "M75 70 C65 55 85 45 75 30 M100 70 C90 55 110 45 100 30 M125 70 C115 55 135 45 125 30", "remplissage": "accline"}, {"chemin": "M40 178 L160 178", "remplissage": null}].
+
+habillage : le pack d'univers du quiz parmi ${PACKS.join(", ")} (defaut si aucun ne correspond).`;
 
 export interface DemandeQuiz {
   sujet: string;
@@ -74,6 +96,12 @@ function slug(texte: string): string {
     .slice(0, 40);
 }
 
+// Les traits repartent au format du schéma : [chemin] ou [chemin, remplissage].
+function versDessin({ bibliotheque, traits }: ContenuQuiz["questions"][number]["dessin"]): Dessin {
+  if (bibliotheque) return bibliotheque;
+  return { traits: traits.map(({ chemin, remplissage }): Trait => (remplissage ? [chemin, remplissage] : [chemin])) };
+}
+
 export function assembler(demande: DemandeQuiz, contenu: ContenuQuiz, id: string): Quiz {
   return {
     id,
@@ -88,7 +116,13 @@ export function assembler(demande: DemandeQuiz, contenu: ContenuQuiz, id: string
     titre: contenu.titre,
     format_cible: ["court-9x16", "long-16x9"],
     statut: "brouillon",
-    parametres_video: { duree_timer_s: 8, duree_reponse_s: 4, ordre_reponses: "aleatoire-fixe", voix_off: false },
+    parametres_video: {
+      duree_timer_s: 8,
+      duree_reponse_s: 4,
+      ordre_reponses: "aleatoire-fixe",
+      habillage: contenu.habillage,
+      voix_off: false,
+    },
     questions: contenu.questions.map((q, i) => {
       const difficulte = Math.min(5, Math.max(1, q.difficulte)) as 1 | 2 | 3 | 4 | 5;
       return {
@@ -100,7 +134,7 @@ export function assembler(demande: DemandeQuiz, contenu: ContenuQuiz, id: string
         bonne_reponse: q.bonne_reponse,
         distracteurs: q.distracteurs,
         anecdote: q.anecdote || undefined,
-        media: { visuel_prompt: q.visuel_prompt },
+        media: { visuel_prompt: q.visuel_prompt, doodle: versDessin(q.dessin) },
         sources: q.sources.map((s) => (s.url ? s : { reference: s.reference })),
         fact_check: { statut: "a-verifier" },
       };
@@ -136,7 +170,8 @@ export async function genererQuiz(demande: DemandeQuiz): Promise<Quiz> {
   for (let essai = 1; essai <= 2; essai++) {
     const reponse = await claude().beta.messages.parse({
       model: MODELE,
-      max_tokens: 16000,
+      // Les dessins allongent la sortie ; au-delà d'environ 21 000, le SDK exige le streaming.
+      max_tokens: 20000,
       system: SYSTEME,
       messages,
       output_config: { effort: "high", format: betaZodOutputFormat(ContenuQuiz) },
@@ -147,16 +182,23 @@ export async function genererQuiz(demande: DemandeQuiz): Promise<Quiz> {
     if (!contenu) throw new Error("Génération : sortie illisible");
 
     const quiz = assembler(demande, contenu, id);
-    const schema = validerSchema(quiz);
-    if (schema.ok) return quiz;
-    if (essai === 2) throw new Error(`Génération : schéma invalide\n${schema.erreurs.join("\n")}`);
+    // Les règles bloquantes de la porte 1 (format, ordre, distracteurs, doublons, dessins) sont renvoyées à Claude.
+    const fautes = porte1(quiz, { enoncesPublies: demande.enoncesPublies, exigerFactCheck: false })
+      .filter((c) => c.bloquant && !c.ok)
+      .map((c) => `${c.regle} : ${c.detail ?? ""}`);
+    if (fautes.length === 0) return quiz;
+    if (essai === 2) {
+      // Au dernier essai, un quiz au bon format est gardé : la porte 1 le bloquera avant le rendu.
+      if (validerSchema(quiz).ok) return quiz;
+      throw new Error(`Génération : schéma invalide\n${fautes.join("\n")}`);
+    }
 
     messages.push(
       // Réponse renvoyée telle quelle (blocs de réflexion compris) : l'historique ne doit pas être modifié.
       { role: "assistant", content: reponse.content },
       {
         role: "user",
-        content: `Ce quiz ne respecte pas le format :\n${schema.erreurs.join("\n")}\nCorrige-le en gardant les mêmes sujets de questions.`,
+        content: `Ce quiz ne respecte pas les règles :\n${fautes.join("\n")}\nCorrige-le en gardant les mêmes sujets de questions.`,
       },
     );
   }
