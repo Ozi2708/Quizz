@@ -59,6 +59,9 @@ function motsCles(quiz: Quiz): string[] {
   return retenus;
 }
 
+// Porte 3 : chaque publication précise que le quiz n'est pas officiel.
+const MENTION = "Quiz non officiel, réalisé par des fans, sans lien avec les ayants droit.";
+
 /** Champs du formulaire envoyé à Upload-Post pour un court 9:16, sans la clé ni la vidéo. */
 export function champsPublication(quiz: Quiz, profil: string, options: OptionsPublication): [string, string][] {
   const { plateformes, prive = false, programme } = options;
@@ -71,7 +74,7 @@ export function champsPublication(quiz: Quiz, profil: string, options: OptionsPu
   // un court, qui n'en reprend qu'une partie, utilise le titre court.
   const m = quiz.metadonnees_publication;
   const titre = m.titre_court ?? m.titre_youtube;
-  const legende = `${titre}\n\n${m.hashtags.join(" ")}`;
+  const legende = `${titre}\n\n${MENTION}\n\n${m.hashtags.join(" ")}`;
   // Une voix de synthèse réaliste doit être signalée sur YouTube comme sur TikTok.
   const voixSynthetique = String(quiz.parametres_video?.voix_off === true);
 

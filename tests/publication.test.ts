@@ -27,9 +27,11 @@ test("un essai privé reste privé sur YouTube et TikTok, et écarte Instagram",
   assert.throws(() => champsPublication(quiz, "quizz", { plateformes: ["instagram"], prive: true }), /Instagram/);
 });
 
-test("la légende TikTok et Instagram reprend le titre court et les hashtags", () => {
-  const champs = champsPublication(exemple(), "quizz", { plateformes: ["tiktok", "instagram"] });
-  const legende = "Seuls les vrais fans de Harry Potter ont 5/5 🧙\n\n#harrypotter #quiz #poudlard #quizcinema";
+test("la légende reprend le titre court, la mention non officielle et les hashtags", () => {
+  const champs = champsPublication(exemple(), "quizz", { plateformes: ["youtube", "tiktok", "instagram"] });
+  const legende =
+    "Seuls les vrais fans de Harry Potter ont 5/5 🧙\n\nQuiz non officiel, réalisé par des fans, sans lien avec les ayants droit.\n\n#harrypotter #quiz #poudlard #quizcinema";
+  assert.deepEqual(valeurs(champs, "youtube_description"), [legende]);
   assert.deepEqual(valeurs(champs, "tiktok_title"), [legende]);
   assert.deepEqual(valeurs(champs, "instagram_title"), [legende]);
   assert.deepEqual(valeurs(champs, "media_type"), ["REELS"]);
