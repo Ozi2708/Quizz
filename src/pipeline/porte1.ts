@@ -1,7 +1,7 @@
 import { IDS_DESSINS } from "./dessins.ts";
 import { validerSchema } from "./schema.ts";
 import { melangerChoix } from "./melange.ts";
-import { LIBELLES, type Quiz } from "./types.ts";
+import { LIBELLES, PART_DES_FANS, type Quiz } from "./types.ts";
 
 // Porte 1 (contenu, avant rendu) : les règles automatisables de
 // templates/standards-qualite.md. Les règles de jugement (ambiguïté, qualité
@@ -57,6 +57,18 @@ export function porte1(quiz: Quiz, options: OptionsPorte1 = {}): Controle[] {
     qs.slice(1).flatMap((q, i) =>
       q.difficulte < qs[i].difficulte ? [`Q${q.numero} (${q.difficulte}) après Q${qs[i].numero} (${qs[i].difficulte})`] : [],
     ),
+  );
+
+  // La part s'affiche à l'écran : elle ne doit pas contredire le badge de difficulté.
+  ajouter(
+    "La part estimée des fans qui trouvent tient dans le palier du niveau",
+    true,
+    qs.flatMap((q) => {
+      const [min, max] = PART_DES_FANS[q.difficulte];
+      return q.part_estimee === undefined || (q.part_estimee >= min && q.part_estimee <= max)
+        ? []
+        : [`Q${q.numero} (${LIBELLES[q.difficulte]}) : ${q.part_estimee} % annoncés, palier de ${min} à ${max} %`];
+    }),
   );
 
   ajouter(

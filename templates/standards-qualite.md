@@ -7,6 +7,7 @@ Chaque quiz passe 3 portes. Une vidéo n'est publiée que si toutes les lignes *
 **Bloquant**
 - [ ] Le fichier est valide contre `quiz.schema.json` *(auto)*
 - [ ] Les difficultés sont croissantes ou égales d'une question à la suivante *(auto)*
+- [ ] La part estimée des fans qui trouvent (`part_estimee`), affichée à l'écran, reste dans le palier de son niveau (barème en bas de page) *(auto)*
 - [ ] Chaque bonne réponse est confirmée par au moins 2 sources indépendantes, dont l'œuvre originale quand c'est possible ; `fact_check.statut = verifie` partout *(auto pour le statut)*
 - [ ] Une seule bonne réponse possible : aucun distracteur n'est aussi correct (ex. « chouette » et « hibou » ensemble)
 - [ ] Pas d'ambiguïté livre / film / VF / VO non signalée dans l'énoncé

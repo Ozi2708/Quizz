@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { fautesDifficulte } from "../src/pipeline/generer.ts";
+import { assembler, fautesDifficulte } from "../src/pipeline/generer.ts";
 import { lireQuiz } from "../src/pipeline/schema.ts";
 import { melangerChoix } from "../src/pipeline/melange.ts";
 import { estBloque, porte1 } from "../src/pipeline/porte1.ts";
@@ -100,4 +100,46 @@ test("la difficulté générée doit tenir le barème et monter à parts égales
     "Q9 (Expert) : 4 % des fans trouvent, il en faut de 5 à 35 % : change la question ou son niveau",
     "Questions par niveau, de Facile à Impossible : 2/2/2/3/1 au lieu de 2 chacun",
   ]);
+});
+
+test("le générateur écrit la part estimée, ramenée dans le palier de son niveau", () => {
+  const question = (difficulte: number, fans_qui_trouvent: number) => ({
+    difficulte,
+    type: "vrai-faux" as const,
+    enonce: `Question de niveau ${difficulte}`,
+    bonne_reponse: "Vrai",
+    distracteurs: ["Faux"],
+    fans_qui_trouvent,
+    anecdote: "",
+    visuel_prompt: "",
+    dessin: { bibliotheque: "chateau", traits: [] },
+    sources: [{ reference: "Atlas" }],
+  });
+  const quiz = assembler(
+    { sujet: "Essai", categorie: "culture-generale", nbQuestions: 3 },
+    {
+      titre: "Essai",
+      sous_sujet: "",
+      tags: [],
+      habillage: "defaut",
+      questions: [question(1, 100), question(3, 85), question(5, 0)],
+      titre_youtube: "Essai",
+      titre_court: "Essai",
+      description: "",
+      hashtags: [],
+      texte_miniature: "",
+      question_commentaire: "",
+    },
+    "essai-3q-test",
+  );
+  assert.deepEqual(quiz.questions.map((q) => q.part_estimee), [99, 70, 1]);
+});
+
+test("une part estimée qui contredit le badge de difficulté bloque", () => {
+  const quiz = exemple();
+  quiz.questions[0].part_estimee = 95;
+  quiz.questions[9].part_estimee = 3;
+  assert.equal(regle(quiz, "La part estimée")?.ok, true);
+  quiz.questions[0].part_estimee = 20;
+  assert.equal(regle(quiz, "La part estimée")?.detail, "Q1 (Facile) : 20 % annoncés, palier de 90 à 100 %");
 });
