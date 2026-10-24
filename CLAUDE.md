@@ -9,6 +9,7 @@ Projet de chaînes de quiz vidéo automatisées (YouTube, TikTok, Instagram). To
 - `templates/storyboard-*.md` décrit le déroulé des vidéos ; `src/video/timing.ts` doit rester aligné sur le storyboard court.
 - `templates/dessins-guide.md` fixe les règles du dessin de chaque question (lié à l'énoncé, sans donner la réponse) ; la bibliothèque de dessins et les packs d'univers sont dans `templates/rendu/doodles.js`, lus par `src/pipeline/dessins.ts`.
 - Les quiz générés vont dans `quizzes/`, les vidéos dans `sortie/` (non versionné).
+- La publication passe par Upload-Post (`src/pipeline/publier.ts`, workflow `publier.yml`) : l'API officielle de TikTok refuse les outils perso et YouTube garde en privé les vidéos d'un projet non audité.
 
 ## Règles
 

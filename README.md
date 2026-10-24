@@ -26,11 +26,25 @@ npm run qa -- quizzes/<id>.json
 # 4. Rendre un court 9:16 (questions 1 à 5) puis contrôler la vidéo (porte 2)
 npm run rendu -- quizzes/<id>.json --debut 1 --fin 5
 
+# 5. Publier le court via Upload-Post (--a-blanc pour voir ce qui partirait, sans rien envoyer)
+npm run publier -- quizzes/<id>.json --video sortie/<id>-court-q1-5.mp4 --plateformes youtube,tiktok --prive
+
 # Prévisualiser et ajuster le template dans le navigateur
 npm run studio
 ```
 
-`--brouillon` sur `qa` et `rendu` permet un essai sans fact-check.
+`--brouillon` sur `qa` et `rendu` permet un essai sans fact-check. La publication, elle, exige toujours le fact-check.
+
+## Publication
+
+Les vidéos partent par [Upload-Post](https://docs.upload-post.com), qui publie en public sur YouTube, TikTok et Instagram : l'API officielle de TikTok refuse les outils perso et YouTube garde en privé les vidéos d'un projet non audité. Le workflow « Publier un quiz » (onglet Actions) enchaîne rendu, portes 1 et 2 et publication, avec un essai privé par défaut.
+
+| Nom | Type GitHub | Rôle |
+|---|---|---|
+| `UPLOAD_POST_API_KEY` | Secret | Clé API Upload-Post |
+| `UPLOAD_POST_USER` | Variable | Nom du profil Upload-Post qui regroupe les comptes de la chaîne |
+
+Un environnement GitHub `publication` avec relecteur obligatoire fait attendre chaque publication un feu vert manuel.
 
 ## Organisation
 
@@ -44,6 +58,6 @@ npm run studio
 
 ## Avancement
 
-Phase 1 (prototype) en cours : génération, vérification, porte 1, template court et porte 2 technique. À venir : format long 16:9, musique et bruitages, contrôle visuel des images clés, publication par API, collecte des statistiques.
+Phase 1 (prototype) en cours : génération, vérification, porte 1, template court et porte 2 technique. À venir : format long 16:9, musique et bruitages, contrôle visuel des images clés, publication quotidienne automatique, collecte des statistiques.
 
 Remotion est gratuit pour un particulier ou une entreprise de 3 personnes au plus ; au-delà, une licence est nécessaire.
