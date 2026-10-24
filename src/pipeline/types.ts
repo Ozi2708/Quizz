@@ -26,6 +26,15 @@ export const LIBELLES: Record<number, LibelleDifficulte> = {
   5: "Impossible",
 };
 
+/** Barème : part des fans du sujet qui trouvent la réponse (%), pour chaque niveau (templates/standards-qualite.md). */
+export const PART_DES_FANS: Record<number, [min: number, max: number]> = {
+  1: [90, 100],
+  2: [70, 90],
+  3: [35, 70],
+  4: [5, 35],
+  5: [0, 5],
+};
+
 export interface Source {
   reference: string;
   url?: string;
@@ -59,6 +68,8 @@ export interface Question {
   media?: { visuel_prompt?: string; extrait_audio?: string; doodle?: Dessin };
   sources: Source[];
   fact_check: FactCheck;
+  /** Part estimée des fans qui trouvent (%), affichée « ≈ X % trouvent » puis « T'as bon ? TOP X % ». */
+  part_estimee?: number;
 }
 
 export interface Quiz {

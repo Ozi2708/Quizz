@@ -6,7 +6,7 @@ import { claude, MODELE, REPLI, verifierArret } from "./claude.ts";
 import { IDS_DESSINS, PACKS } from "./dessins.ts";
 import { porte1 } from "./porte1.ts";
 import { validerSchema } from "./schema.ts";
-import { LIBELLES, REMPLISSAGES, type Categorie, type Dessin, type Quiz, type Trait } from "./types.ts";
+import { LIBELLES, PART_DES_FANS, REMPLISSAGES, type Categorie, type Dessin, type Quiz, type Trait } from "./types.ts";
 
 // Étape 2 du pipeline : Claude écrit le contenu, le code ajoute les champs
 // techniques (id, statut, fact_check) puis contrôle le tout avec la porte 1.
@@ -100,9 +100,6 @@ function slug(texte: string): string {
 
 const niveau = (difficulte: number) => Math.min(5, Math.max(1, difficulte)) as 1 | 2 | 3 | 4 | 5;
 
-// Part des fans du sujet qui trouvent la réponse, en %, pour chaque niveau du barème.
-const PART_DES_FANS: Record<number, [number, number]> = { 1: [90, 100], 2: [70, 90], 3: [35, 70], 4: [5, 35], 5: [0, 5] };
-
 /** Une difficulté qui monte vraiment : chaque niveau tient sa promesse, et chaque niveau a sa part de questions. */
 export function fautesDifficulte(questions: { difficulte: number; fans_qui_trouvent: number }[]): string[] {
   const fautes = questions.flatMap((q, i) => {
@@ -118,6 +115,12 @@ export function fautesDifficulte(questions: { difficulte: number; fans_qui_trouv
     fautes.push(`Questions par niveau, de Facile à Impossible : ${parNiveau.join("/")} au lieu de ${bas === haut ? bas : `${bas} ou ${haut}`} chacun`);
   }
   return fautes;
+}
+
+// Part affichée dans la vidéo : l'estimation du générateur, ramenée dans le palier de son niveau (1 à 99 %).
+function partEstimee(fans: number, difficulte: number): number {
+  const [min, max] = PART_DES_FANS[niveau(difficulte)];
+  return Math.min(99, Math.max(1, min, Math.min(max, Math.round(fans))));
 }
 
 // Les traits repartent au format du schéma : [chemin] ou [chemin, remplissage].
@@ -161,6 +164,7 @@ export function assembler(demande: DemandeQuiz, contenu: ContenuQuiz, id: string
         media: { visuel_prompt: q.visuel_prompt, doodle: versDessin(q.dessin) },
         sources: q.sources.map((s) => (s.url ? s : { reference: s.reference })),
         fact_check: { statut: "a-verifier" },
+        part_estimee: partEstimee(q.fans_qui_trouvent, difficulte),
       };
     }),
     metadonnees_publication: {

@@ -7,14 +7,15 @@ Chaque quiz passe 3 portes. Une vidéo n'est publiée que si toutes les lignes *
 **Bloquant**
 - [ ] Le fichier est valide contre `quiz.schema.json` *(auto)*
 - [ ] Les difficultés sont croissantes ou égales d'une question à la suivante *(auto)*
+- [ ] La part estimée des fans qui trouvent (`part_estimee`), affichée à l'écran, reste dans le palier de son niveau (barème en bas de page) *(auto)*
 - [ ] Chaque bonne réponse est confirmée par au moins 2 sources indépendantes, dont l'œuvre originale quand c'est possible ; `fact_check.statut = verifie` partout *(auto pour le statut)*
 - [ ] Une seule bonne réponse possible : aucun distracteur n'est aussi correct (ex. « chouette » et « hibou » ensemble)
 - [ ] Pas d'ambiguïté livre / film / VF / VO non signalée dans l'énoncé
 - [ ] Les distracteurs sont de même nature et de longueur comparable à la bonne réponse (la réponse ne doit pas se deviner par sa forme)
 - [ ] Aucun doublon de question avec les quiz déjà publiés sur la chaîne *(auto)*
 - [ ] Orthographe et grammaire françaises correctes, noms propres dans leur forme VF officielle
-- [ ] Chaque question a son dessin, tiré de la bibliothèque ou dessiné pour elle, et aucun n'est répété dans le quiz *(auto)*
-- [ ] Chaque dessin évoque l'énoncé sans donner la réponse (`dessins-guide.md`) *(alerte auto quand un dessin de la bibliothèque porte le nom de la réponse)*
+- [ ] Chaque question a un dessin (`media.doodle`) lié à son énoncé, id connu de `rendu/doodles.js` ou tracé lisible, et aucun dessin n'est répété dans le quiz *(auto)*
+- [ ] Aucun dessin ne donne la réponse (voir `dessins-guide.md`) *(alerte auto si l'id porte le nom de la bonne réponse)*
 
 **Recommandé**
 - [ ] Au moins 2 questions qui surprennent même un fan (anecdote « je ne savais pas »)
@@ -51,10 +52,12 @@ Chaque quiz passe 3 portes. Une vidéo n'est publiée que si toutes les lignes *
 
 ## Barème de difficulté (référence)
 
-| Niveau | Libellé | Qui trouve ? |
-|---|---|---|
-| 1 | Facile | N'importe qui, même sans avoir vu l'œuvre |
-| 2 | Moyen | A vu les films une fois |
-| 3 | Difficile | Fan qui a revu les films |
-| 4 | Expert | Lecteur des livres / fan assidu |
-| 5 | Impossible | Connaît les détails, les coulisses, les noms secondaires |
+| Niveau | Libellé | Part qui trouve | Exemple de profil |
+|---|---|---|---|
+| 1 | Facile | 90 % du grand public (90 à 100 % des fans) | N'importe qui, même sans avoir vu l'œuvre |
+| 2 | Moyen | La moitié du grand public, 70 à 90 % des fans | A vu les films une fois |
+| 3 | Difficile | 35 à 70 % des fans | Fan qui a revu les films |
+| 4 | Expert | 5 à 35 % des fans | Lecteur des livres, fan assidu |
+| 5 | Impossible | Moins de 5 % des fans | Connaît les détails, les coulisses, les noms secondaires |
+
+Répartition pour 10 questions : 2 par niveau.

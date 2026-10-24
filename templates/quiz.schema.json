@@ -162,6 +162,12 @@
             "nb_sources_concordantes": { "type": "integer", "minimum": 0 },
             "note": { "type": "string", "description": "Ambiguïté connue (traduction FR/EN, livre vs film...)" }
           }
+        },
+        "part_estimee": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99,
+          "description": "Part estimée des fans qui trouvent la réponse (%), cohérente avec le barème de difficulté. Affichée « ≈ X % trouvent » puis « T'as bon ? TOP X % ». Absente : milieu du palier (90, 80, 50, 20, 4)."
         }
       }
     }
