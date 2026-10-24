@@ -31,6 +31,7 @@ const ContenuQuiz = z.object({
       enonce: z.string(),
       bonne_reponse: z.string(),
       distracteurs: z.array(z.string()),
+      fans_qui_trouvent: z.number().int(),
       anecdote: z.string(),
       visuel_prompt: z.string(),
       dessin: DessinGenere,
@@ -48,15 +49,16 @@ type ContenuQuiz = z.infer<typeof ContenuQuiz>;
 
 const SYSTEME = `Tu écris des quiz vidéo en français pour YouTube, TikTok et Instagram. Le spectateur joue : il lit la question, réfléchit pendant le minuteur, puis voit la réponse.
 
-Barème de difficulté (champ difficulte) :
-1 Facile : n'importe qui trouve, même sans connaître le sujet en détail.
-2 Moyen : quelqu'un qui connaît le sujet une fois.
-3 Difficile : un vrai fan ou un passionné.
-4 Expert : un fan assidu, un lecteur des sources originales.
-5 Impossible : détails, coulisses, noms secondaires.
+Barème de difficulté (champ difficulte), calé sur la part des fans du sujet qui trouvent la bonne réponse (champ fans_qui_trouvent, ton estimation honnête en %) :
+1 Facile : presque tout le monde trouve, même sans connaître le sujet (90 % du grand public, 90 à 100 % des fans).
+2 Moyen : la moitié du grand public, mais presque tous les fans (70 à 90 %).
+3 Difficile : environ la moitié des fans (35 à 70 %).
+4 Expert : un fan sur cinq environ, ceux qui revoient l'œuvre ou lisent les sources (5 à 35 %).
+5 Impossible : moins d'un fan sur vingt : détails, coulisses, noms secondaires (moins de 5 %).
+Pour un sujet sans œuvre (géographie, histoire…), les fans sont les passionnés du sujet.
 
 Règles impératives :
-- Questions triées par difficulté croissante, en montant régulièrement de 1 à 5.
+- Questions triées par difficulté croissante, autant de questions à chaque niveau (2 par niveau pour 10 questions). L'écart doit se sentir : un fan doit hésiter dès le niveau Difficile.
 - Énoncé de 90 caractères au plus, lisible en 4 secondes. Réponses de 40 caractères au plus.
 - Une seule bonne réponse possible. Aucun distracteur ne doit être aussi correct (pas « chouette » et « hibou » ensemble).
 - Distracteurs plausibles, de même nature et de longueur comparable à la bonne réponse, idéalement du même univers.
@@ -96,6 +98,28 @@ function slug(texte: string): string {
     .slice(0, 40);
 }
 
+const niveau = (difficulte: number) => Math.min(5, Math.max(1, difficulte)) as 1 | 2 | 3 | 4 | 5;
+
+// Part des fans du sujet qui trouvent la réponse, en %, pour chaque niveau du barème.
+const PART_DES_FANS: Record<number, [number, number]> = { 1: [90, 100], 2: [70, 90], 3: [35, 70], 4: [5, 35], 5: [0, 5] };
+
+/** Une difficulté qui monte vraiment : chaque niveau tient sa promesse, et chaque niveau a sa part de questions. */
+export function fautesDifficulte(questions: { difficulte: number; fans_qui_trouvent: number }[]): string[] {
+  const fautes = questions.flatMap((q, i) => {
+    const n = niveau(q.difficulte);
+    const [min, max] = PART_DES_FANS[n];
+    return q.fans_qui_trouvent >= min && q.fans_qui_trouvent <= max
+      ? []
+      : [`Q${i + 1} (${LIBELLES[n]}) : ${q.fans_qui_trouvent} % des fans trouvent, il en faut de ${min} à ${max} % : change la question ou son niveau`];
+  });
+  const parNiveau = [1, 2, 3, 4, 5].map((n) => questions.filter((q) => niveau(q.difficulte) === n).length);
+  const [bas, haut] = [Math.floor(questions.length / 5), Math.ceil(questions.length / 5)];
+  if (parNiveau.some((nb) => nb < bas || nb > haut)) {
+    fautes.push(`Questions par niveau, de Facile à Impossible : ${parNiveau.join("/")} au lieu de ${bas === haut ? bas : `${bas} ou ${haut}`} chacun`);
+  }
+  return fautes;
+}
+
 // Les traits repartent au format du schéma : [chemin] ou [chemin, remplissage].
 function versDessin({ bibliotheque, traits }: ContenuQuiz["questions"][number]["dessin"]): Dessin {
   if (bibliotheque) return bibliotheque;
@@ -124,7 +148,7 @@ export function assembler(demande: DemandeQuiz, contenu: ContenuQuiz, id: string
       voix_off: false,
     },
     questions: contenu.questions.map((q, i) => {
-      const difficulte = Math.min(5, Math.max(1, q.difficulte)) as 1 | 2 | 3 | 4 | 5;
+      const difficulte = niveau(q.difficulte);
       return {
         numero: i + 1,
         difficulte,
@@ -182,10 +206,14 @@ export async function genererQuiz(demande: DemandeQuiz): Promise<Quiz> {
     if (!contenu) throw new Error("Génération : sortie illisible");
 
     const quiz = assembler(demande, contenu, id);
-    // Les règles bloquantes de la porte 1 (format, ordre, distracteurs, doublons, dessins) sont renvoyées à Claude.
-    const fautes = porte1(quiz, { enoncesPublies: demande.enoncesPublies, exigerFactCheck: false })
-      .filter((c) => c.bloquant && !c.ok)
-      .map((c) => `${c.regle} : ${c.detail ?? ""}`);
+    // Les règles bloquantes de la porte 1 (format, ordre, distracteurs, doublons, dessins)
+    // et le barème de difficulté sont renvoyés à Claude.
+    const fautes = [
+      ...porte1(quiz, { enoncesPublies: demande.enoncesPublies, exigerFactCheck: false })
+        .filter((c) => c.bloquant && !c.ok)
+        .map((c) => `${c.regle} : ${c.detail ?? ""}`),
+      ...fautesDifficulte(contenu.questions),
+    ];
     if (fautes.length === 0) return quiz;
     if (essai === 2) {
       // Au dernier essai, un quiz au bon format est gardé : la porte 1 le bloquera avant le rendu.
